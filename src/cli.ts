@@ -10,6 +10,7 @@ import { registerGoCommands } from "./cli/goCommands.js";
 import { registerModelCommands } from "./cli/modelCommands.js";
 import { registerIl2cppCommands } from "./cli/il2cppCommands.js";
 import { registerRustCommands } from "./cli/rustCommands.js";
+import { registerHermesCommands } from "./cli/hermesCommands.js";
 import { registerSqliteCommands } from "./cli/sqliteCommands.js";
 import { registerAnalysisViewCommands } from "./cli/analysisViewCommands.js";
 import { registerBinaryDiagnosticsCommands } from "./cli/binaryDiagnosticsCommands.js";
@@ -126,6 +127,7 @@ export const createCli = (
   registerEvmCommands(cli, logger, environment);
   registerDesktopApplicationCommands(cli, logger);
   registerGoCommands(cli, logger);
+  registerHermesCommands(cli, logger);
   registerIl2cppCommands(cli, logger);
   registerModelCommands(cli, logger);
   registerRustCommands(cli, logger);

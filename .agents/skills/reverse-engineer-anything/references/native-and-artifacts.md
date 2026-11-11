@@ -94,6 +94,30 @@ dependencies. An omitted package kind stays null. A rustc commit hash is
 inferred from a read-only `/rustc/<40-hex>/` path and does not by itself
 identify the compiler. See [Rust binaries](https://github.com/morluto/rea/blob/main/docs/rust-binaries.md).
 
+## React Native Hermes bytecode
+
+A React Native or Expo application built with Hermes ships compiled bytecode
+in `assets/index.android.bundle` (APK) or `main.jsbundle` (iOS). Extract the
+file from the archive, then use the two built-in tools; no `open_binary`,
+Hermes installation, or target execution is required.
+
+1. `search_hermes_bytecode` with `target: "strings"` and `contains` set to a
+   label, URL, storage key, route or error message seen in the application.
+   Each match lists `referenced_by` function ids and `names_functions`.
+2. `inspect_hermes_bytecode` with one `function_id`. Read the
+   `byte_offset<TAB>Opcode operands` lines, follow `fn#<id>` operands into
+   nested closures, and use `referenced_by` to walk outward to the function
+   that creates the selected one.
+3. Page with `offset` from `next_offset`; do not request every function.
+
+The CLI equivalents are `search-hermes-bytecode PATH --contains TEXT` and
+`inspect-hermes-bytecode PATH --function-id N`. Minified bundles leave most
+functions unnamed, so start from strings rather than names. Instructions are
+observed; what a function does is your derivation from them. Check
+`bytecode.decoder_verification` and report `source-derived` versions as such.
+Bytecode versions 98 and later are unsupported. See
+[Hermes bytecode](https://github.com/morluto/rea/blob/main/docs/hermes-bytecode.md).
+
 ## SQLite snapshots
 
 Use `inspect_sqlite_database` with an explicit local database snapshot for its

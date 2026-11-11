@@ -34,6 +34,7 @@ export const toolFamilyCatalog = (sources) => {
         ...sources.desktopContracts.DESKTOP_APPLICATION_TOOL_CONTRACTS,
         ...sources.evmContracts.EVM_TOOL_CONTRACTS,
         ...sources.goContracts.GO_TOOL_CONTRACTS,
+        ...sources.hermesContracts.HERMES_TOOL_CONTRACTS,
         ...sources.il2cppContracts.IL2CPP_TOOL_CONTRACTS,
         ...sources.modelContracts.MODEL_TOOL_CONTRACTS,
         ...sources.rustContracts.RUST_TOOL_CONTRACTS,
@@ -267,6 +268,10 @@ export const providerCatalog = (sources) => {
     {
       identity: sources.goProvider.GO_BINARY_PROVIDER_IDENTITY,
       contracts: sources.goContracts.GO_TOOL_CONTRACTS,
+    },
+    {
+      identity: sources.hermesProvider.HERMES_BYTECODE_PROVIDER_IDENTITY,
+      contracts: sources.hermesContracts.HERMES_TOOL_CONTRACTS,
     },
     {
       identity: sources.il2cppProvider.IL2CPP_METADATA_PROVIDER_IDENTITY,

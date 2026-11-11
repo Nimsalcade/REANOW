@@ -29,6 +29,10 @@ const EXECUTION_WORDING_EXCEPTIONS: Readonly<Record<string, string>> = {
   inspect_desktop_application:
     "states that directory triage performs no target execution",
   inspect_go_binary: "reads embedded metadata without executing the target",
+  inspect_hermes_bytecode:
+    "decodes bytecode in process without executing the bundle",
+  search_hermes_bytecode:
+    "searches bytecode tables in process without executing the bundle",
   inspect_rust_binary:
     "reads an embedded dependency list without executing the target",
   inspect_sqlite_database:

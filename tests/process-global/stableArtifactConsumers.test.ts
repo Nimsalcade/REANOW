@@ -61,6 +61,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 });
 
 import { RustBinaryProvider } from "../../src/rust/RustBinaryProvider.js";
+import { HermesBytecodeProvider } from "../../src/hermes/HermesBytecodeProvider.js";
 import { RustBinaryService } from "../../src/application/rust/RustBinaryService.js";
 import { AnalysisError } from "../../src/domain/analysisErrorBase.js";
 import { parseEvidence } from "../../src/domain/evidence.js";
@@ -87,6 +88,10 @@ import { peResourceFixture } from "../../src/native/pe/PeResources.fixture.js";
 import { createServer } from "../../src/server/createServer.js";
 import { createTestBinarySession } from "../fixtures/binarySession.js";
 import { createRustImage } from "../fixtures/rust/image.js";
+import {
+  createHermesBytecode,
+  sampleHermesFixture,
+} from "../fixtures/hermes/bytecode.js";
 import { createIl2cppMetadataFixture } from "../fixtures/il2cpp/metadata.js";
 import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 import { parseMcpToolError } from "../fixtures/mcpToolError.js";
@@ -105,6 +110,7 @@ beforeEach(() => {
 const staticProviders = [
   ["Rust", () => new RustBinaryProvider()],
   ["Go", () => new GoBinaryProvider()],
+  ["Hermes", () => new HermesBytecodeProvider()],
   ["PE", () => new PeResourcesProvider()],
   ["IL2CPP metadata", () => new Il2cppMetadataProvider()],
 ] as const;
@@ -136,6 +142,8 @@ it.each(staticProviders)(
       await writeFile(path, peResourceFixture().bytes);
     if (provider instanceof Il2cppMetadataProvider)
       await writeFile(path, createIl2cppMetadataFixture().bytes);
+    if (provider instanceof HermesBytecodeProvider)
+      await writeFile(path, createHermesBytecode(sampleHermesFixture()));
     const controller = new AbortController();
     const reason = new Error("cancel during confirmed descriptor close");
     fault.blockNew = false;

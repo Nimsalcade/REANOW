@@ -145,6 +145,18 @@ dependency edges, and the section's file range. A missing `.dep-v0` section is
 null metadata, not proof that the binary has no dependencies. See
 [Rust binaries](rust-binaries.md).
 
+Read a React Native Hermes bytecode bundle without installing Hermes. Search
+for a string to find the functions that use it, then disassemble one:
+
+```bash
+rea search-hermes-bytecode /absolute/path/to/index.android.bundle --contains api.example.com --json
+rea inspect-hermes-bytecode /absolute/path/to/index.android.bundle --function-id 41583 --json
+```
+
+Without `--function-id`, `inspect-hermes-bytecode` reports the bytecode
+version, hashes, table counts and section layout. `--target functions`
+searches recorded function names. See [Hermes bytecode](hermes-bytecode.md).
+
 Configure [Hopper or Ghidra](installation.md#hopper), the
 [IDA adapter](ida-provider.md), or [Kuna](kuna-provider.md) before analyzing a
 native target. Substitute

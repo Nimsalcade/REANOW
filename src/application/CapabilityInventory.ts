@@ -413,6 +413,8 @@ const workflowAvailabilityFor = ({
   if (
     name === "inspect_desktop_application" ||
     name === "inspect_go_binary" ||
+    name === "inspect_hermes_bytecode" ||
+    name === "search_hermes_bytecode" ||
     name === "inspect_il2cpp_metadata" ||
     name === "inspect_model_artifact" ||
     name === "inspect_rust_binary" ||

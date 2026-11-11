@@ -203,6 +203,16 @@ explicit path or endpoint and do not need it.
   A rustc commit hash is an inference from a read-only `/rustc/<40-hex>/` path.
   See the
   [Rust binary guide](https://github.com/morluto/rea/blob/main/docs/rust-binaries.md).
+- React Native or Expo bundle compiled to Hermes bytecode
+  (`index.android.bundle`, `main.jsbundle`; the JavaScript tools cannot read
+  it): `search_hermes_bytecode` with `target: "strings"` and a visible label,
+  URL, key or message, then `inspect_hermes_bytecode` with a returned
+  `function_id` for its disassembly. Built-in for bytecode versions 59 to 96;
+  no Hermes installation and no execution. `referenced_by` covers instruction
+  operands and array/object literals, so an empty list is not proof a string
+  is unused. Disassembly is not source; state conclusions drawn from
+  instructions as derived. Versions 98+ are unsupported. See the
+  [Hermes bytecode guide](https://github.com/morluto/rea/blob/main/docs/hermes-bytecode.md).
 
 - Explicit local SQLite database snapshot: `inspect_sqlite_database`. Inspect
   with Node.js 24.x >=24.15 or 26+ providing native SQLite limits. Read schema
