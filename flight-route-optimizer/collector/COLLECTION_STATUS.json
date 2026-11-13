@@ -1,0 +1,20 @@
+{
+  "research_as_of": "2026-11-13",
+  "scope": "U.S. passenger flights; Alaska, Hawaii and territories considered explicitly",
+  "source_entries": 39,
+  "download_jobs_prepared": 23,
+  "upstream_raw_files_included": 0,
+  "upstream_flight_records_included": 0,
+  "source_metadata_included": true,
+  "download_attempts": [
+    {"url": "https://ourairports.com/data/airports.csv", "status": 403, "reason": "Workspace network policy blocked URL"},
+    {"url": "https://aviationweather.gov/data/cache/stations.cache.json.gz", "status": 403, "reason": "Workspace network policy blocked URL"},
+    {"url": "https://www.transtats.bts.gov/releaseinfo.asp", "status": 403, "reason": "Workspace network policy blocked URL"},
+    {"url": "https://raw.githubusercontent.com/datasets/airport-codes/main/data/airport-codes.csv", "status": 403, "reason": "Workspace network policy blocked URL"}
+  ],
+  "research_method": "Public provider pages, official documentation and published download links retrieved through web research.",
+  "verification_limit": "Documentation checks do not establish that local downloads will succeed or that every raw source schema matches the importer.",
+  "live_validation": "Not completed; no provider credentials used and no network block bypassed.",
+  "included_tests": "Synthetic fixtures and mocked HTTP responses only; not real flights or real-time weather.",
+  "refresh_behavior": "Dated jobs target identified releases. Rolling sources return data current when the user runs the collector."
+}

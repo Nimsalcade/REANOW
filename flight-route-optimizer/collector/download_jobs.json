@@ -1,0 +1,259 @@
+{
+  "as_of": "2026-11-13",
+  "default_group": "reference",
+  "jobs": [
+    {
+      "id": "oa_airports",
+      "source_id": "ourairports",
+      "group": "reference",
+      "url": "https://davidmegginson.github.io/ourairports-data/airports.csv",
+      "format": "csv",
+      "filename": "ourairports/airports.csv",
+      "data_period": "rolling",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "oa_runways",
+      "source_id": "ourairports",
+      "group": "reference",
+      "url": "https://davidmegginson.github.io/ourairports-data/runways.csv",
+      "format": "csv",
+      "filename": "ourairports/runways.csv",
+      "data_period": "rolling",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "oa_airport-frequencies",
+      "source_id": "ourairports",
+      "group": "reference",
+      "url": "https://davidmegginson.github.io/ourairports-data/airport-frequencies.csv",
+      "format": "csv",
+      "filename": "ourairports/airport-frequencies.csv",
+      "data_period": "rolling",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "oa_countries",
+      "source_id": "ourairports",
+      "group": "reference",
+      "url": "https://davidmegginson.github.io/ourairports-data/countries.csv",
+      "format": "csv",
+      "filename": "ourairports/countries.csv",
+      "data_period": "rolling",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "oa_regions",
+      "source_id": "ourairports",
+      "group": "reference",
+      "url": "https://davidmegginson.github.io/ourairports-data/regions.csv",
+      "format": "csv",
+      "filename": "ourairports/regions.csv",
+      "data_period": "rolling",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "airport_timezones",
+      "source_id": "airportsdata",
+      "group": "reference",
+      "url": "https://raw.githubusercontent.com/mborsetti/airportsdata/main/airportsdata/airports.csv",
+      "format": "csv",
+      "filename": "airportsdata/airports.csv",
+      "data_period": "rolling",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "airport_timezones_license",
+      "source_id": "airportsdata",
+      "group": "reference",
+      "url": "https://raw.githubusercontent.com/mborsetti/airportsdata/main/LICENSE",
+      "format": "text",
+      "filename": "airportsdata/LICENSE",
+      "data_period": "rolling",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "faa_airports",
+      "source_id": "faa_nasr",
+      "group": "reference",
+      "url": "https://nfdc.faa.gov/webContent/28DaySub/extra/29_Oct_2026_APT_CSV.zip",
+      "format": "zip",
+      "filename": "faa/2026-10-29_APT_CSV.zip",
+      "data_period": "2026-10-29",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "faa_awos",
+      "source_id": "faa_nasr",
+      "group": "reference",
+      "url": "https://nfdc.faa.gov/webContent/28DaySub/extra/29_Oct_2026_AWOS_CSV.zip",
+      "format": "zip",
+      "filename": "faa/2026-10-29_AWOS_CSV.zip",
+      "data_period": "2026-10-29",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "ghcnh_stations",
+      "source_id": "ghcnh",
+      "group": "reference",
+      "url": "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh-station-list.txt",
+      "format": "text",
+      "filename": "noaa/ghcnh-station-list.txt",
+      "data_period": "rolling",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "awc_metars",
+      "source_id": "awc",
+      "group": "weather",
+      "url": "https://aviationweather.gov/data/cache/metars.cache.csv.gz",
+      "format": "gzip_csv",
+      "filename": "awc/metars.cache.csv.gz",
+      "data_period": "live at download time",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "awc_tafs",
+      "source_id": "awc",
+      "group": "weather",
+      "url": "https://aviationweather.gov/data/cache/tafs.cache.xml.gz",
+      "format": "gzip_xml",
+      "filename": "awc/tafs.cache.xml.gz",
+      "data_period": "live at download time",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "awc_sigmets",
+      "source_id": "awc",
+      "group": "weather",
+      "url": "https://aviationweather.gov/data/cache/sigmets.cache.json.gz",
+      "format": "gzip_json",
+      "filename": "awc/sigmets.cache.json.gz",
+      "data_period": "live at download time",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "awc_gairmets",
+      "source_id": "awc",
+      "group": "weather",
+      "url": "https://aviationweather.gov/data/cache/gairmets.cache.xml.gz",
+      "format": "gzip_xml",
+      "filename": "awc/gairmets.cache.xml.gz",
+      "data_period": "live at download time",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "awc_stations",
+      "source_id": "awc",
+      "group": "weather",
+      "url": "https://aviationweather.gov/data/cache/stations.cache.json.gz",
+      "format": "gzip_json",
+      "filename": "awc/stations.cache.json.gz",
+      "data_period": "live at download time",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "awc_aircraftreports",
+      "source_id": "awc",
+      "group": "weather",
+      "url": "https://aviationweather.gov/data/cache/aircraftreports.cache.csv.gz",
+      "format": "gzip_csv",
+      "filename": "awc/aircraftreports.cache.csv.gz",
+      "data_period": "live at download time",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "faa_status",
+      "source_id": "faa_nas_status",
+      "group": "live",
+      "url": "https://nasstatus.faa.gov/api/airport-status-information",
+      "format": "xml",
+      "filename": "faa/airport-status.xml",
+      "data_period": "live at download time",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "nws_alerts",
+      "source_id": "nws_api",
+      "group": "live",
+      "url": "https://api.weather.gov/alerts/active",
+      "format": "json",
+      "filename": "nws/active-alerts.json",
+      "data_period": "live at download time",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "bts_ontime_2026_08",
+      "source_id": "bts_ontime_reporting",
+      "group": "history",
+      "url": "https://transtats.bts.gov/PREZIP/On_Time_Reporting_Carrier_On_Time_Performance_1987_present_2026_8.zip",
+      "format": "zip",
+      "filename": "bts/ontime_2026_08.zip",
+      "data_period": "2026-08",
+      "listed_size_bytes": 32030583,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "db1c_ticket_2026_07",
+      "source_id": "bts_db1c",
+      "group": "fares",
+      "url": "https://ostrapeispubdownloadprod.blob.core.windows.net/ostrapeis-pub-download-prod/ond40/products/db1c_public/DB1C.TICKET.202607.15OCT2026.zip",
+      "format": "zip",
+      "filename": "bts/DB1C.TICKET.202607.zip",
+      "data_period": "2026-07",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "db1c_market_2026_07",
+      "source_id": "bts_db1c",
+      "group": "fares",
+      "url": "https://ostrapeispubdownloadprod.blob.core.windows.net/ostrapeis-pub-download-prod/ond40/products/db1c_public/DB1C.MARKET.202607.15OCT2026.zip",
+      "format": "zip",
+      "filename": "bts/DB1C.MARKET.202607.zip",
+      "data_period": "2026-07",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "db1c_coupon_2026_07",
+      "source_id": "bts_db1c",
+      "group": "fares",
+      "url": "https://ostrapeispubdownloadprod.blob.core.windows.net/ostrapeis-pub-download-prod/ond40/products/db1c_public/DB1C.COUPON.202607.15OCT2026.zip",
+      "format": "zip",
+      "filename": "bts/DB1C.COUPON.202607.zip",
+      "data_period": "2026-07",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    },
+    {
+      "id": "db1c_segment_2026_07",
+      "source_id": "bts_db1c",
+      "group": "fares",
+      "url": "https://ostrapeispubdownloadprod.blob.core.windows.net/ostrapeis-pub-download-prod/ond40/products/db1c_public/DB1C.SEGMENT.202607.15OCT2026.zip",
+      "format": "zip",
+      "filename": "bts/DB1C.SEGMENT.202607.zip",
+      "data_period": "2026-07",
+      "listed_size_bytes": null,
+      "verification": "Provider documentation or download listing checked; bytes not fetched."
+    }
+  ]
+}

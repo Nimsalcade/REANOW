@@ -1,0 +1,905 @@
+{
+  "title": "U.S. flight project data catalog",
+  "as_of": "2026-11-13",
+  "scope": "Passenger flight route and schedule suggestions nationwide. Includes Alaska, Hawaii and explicitly tagged territories.",
+  "completeness": "Broad primary-source catalog, not a claim that every local or privately licensed dataset has been inventoried.",
+  "collection_state": "Documentation researched. No upstream bulk data bytes are included; source downloads were blocked in this workspace.",
+  "sources": [
+    {
+      "id": "faa_nasr",
+      "name": "FAA NASR airport and facility data",
+      "group": "reference",
+      "priority": "core",
+      "access": "free_no_key",
+      "coverage": "U.S. airports and landing facilities, including Alaska, Hawaii and territories; check each file scope.",
+      "update_cadence": "28-day cycle",
+      "latest_period_verified": "2026-10-29 effective; next cycle 2026-11-26",
+      "project_use": "Official airport identifiers, coordinates, facilities, runways and weather-station links.",
+      "limits": "Many facilities have no passenger service. Effective date differs from publication date.",
+      "source_urls": [
+        "https://www.faa.gov/air_traffic/flight_info/aeronav/Aero_Data/NASR_Subscription/",
+        "https://www.faa.gov/air_traffic/flight_info/aeronav/aero_data/NASR_Subscription/2026-10-29/"
+      ],
+      "formats": [
+        "CSV ZIP",
+        "AIXM",
+        "TXT",
+        "shapefile"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "ourairports",
+      "name": "OurAirports",
+      "group": "reference",
+      "priority": "core",
+      "access": "free_no_key",
+      "coverage": "Global; filter U.S. and territories explicitly.",
+      "update_cadence": "Daily",
+      "latest_period_verified": "Download page lists November 12, 2026 files",
+      "project_use": "Airport search, coordinates, IATA/ICAO/local codes, runways, frequencies and service flag.",
+      "limits": "Community data. A service flag does not prove that a flight operates on a requested date.",
+      "source_urls": [
+        "https://ourairports.com/data/",
+        "https://ourairports.com/help/data-dictionary.html",
+        "https://github.com/davidmegginson/ourairports-data"
+      ],
+      "formats": [
+        "CSV"
+      ],
+      "reuse_notes": "Public domain, as stated by OurAirports.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "airportsdata",
+      "name": "airportsdata airport time zones",
+      "group": "reference",
+      "priority": "core",
+      "access": "free_no_key",
+      "coverage": "Global airport directory.",
+      "update_cadence": "Project releases and repository updates",
+      "latest_period_verified": "Current documentation checked; file contents not downloaded",
+      "project_use": "Map airport identifiers to IANA time zones and FAA location identifiers.",
+      "limits": "Current airports only; not a historical airport-code table. Some identifiers are internal codes.",
+      "source_urls": [
+        "https://github.com/mborsetti/airportsdata/blob/main/README.rst",
+        "https://github.com/mborsetti/airportsdata/blob/main/airportsdata/airports.csv"
+      ],
+      "formats": [
+        "CSV",
+        "Python package"
+      ],
+      "reuse_notes": "MIT; retain the project license when redistributing its data or code.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "iana_tzdb",
+      "name": "IANA time-zone database",
+      "group": "reference",
+      "priority": "core",
+      "access": "free_no_key",
+      "coverage": "Worldwide time-zone rules.",
+      "update_cadence": "When rules change",
+      "latest_period_verified": "2026f, released 2026-10-27",
+      "project_use": "Correct local-time conversion, daylight-saving changes and overnight connections.",
+      "limits": "Use a named zone and date. A fixed UTC offset is insufficient.",
+      "source_urls": [
+        "https://www.iana.org/time-zones",
+        "https://data.iana.org/time-zones/tz-link.html"
+      ],
+      "formats": [
+        "tzdata archive"
+      ],
+      "reuse_notes": "Public-domain time-zone data; retain bundled notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "bts_airport_codes",
+      "name": "BTS airport history and code lookup tables",
+      "group": "reference",
+      "priority": "core",
+      "access": "free_export",
+      "coverage": "Airports, city markets, airlines and other codes used by BTS.",
+      "update_cadence": "As BTS revises tables",
+      "latest_period_verified": "Current schema checked; individual exports not downloaded",
+      "project_use": "Join AirportID, AirportSeqID, CityMarketID and DOT airline identifiers across years.",
+      "limits": "Airport and airline display codes can be reused. Preserve date ranges and stable IDs.",
+      "source_urls": [
+        "https://www.transtats.bts.gov/DL_SelectFields.aspx?QO_fu146_anzr=&gnoyr_VQ=FLL",
+        "https://www.transtats.bts.gov/Fields.asp?gnoyr_VQ=FGJ"
+      ],
+      "formats": [
+        "CSV exports",
+        "lookup tables"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "faa_enplanements",
+      "name": "FAA airport boardings and cargo totals",
+      "group": "demand",
+      "priority": "useful",
+      "access": "free_export",
+      "coverage": "U.S. commercial-service and other reporting airports.",
+      "update_cadence": "Annual",
+      "latest_period_verified": "2025; boarding files updated 2026-09-24",
+      "project_use": "Airport importance, hub categories and checks on passenger coverage.",
+      "limits": "Annual totals are not current flight schedules or available seats.",
+      "source_urls": [
+        "https://www.faa.gov/airports/planning_capacity/passenger_allcargo_stats/passenger"
+      ],
+      "formats": [
+        "XLSX",
+        "PDF"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "dot_eas",
+      "name": "DOT Essential Air Service reports",
+      "group": "demand",
+      "priority": "useful",
+      "access": "free_export",
+      "coverage": "Subsidized small-community service; separate Alaska reports.",
+      "update_cadence": "Periodic; contracts vary",
+      "latest_period_verified": "May 2026 status reports listed",
+      "project_use": "Check small-community routes and carriers absent from large-airline performance files.",
+      "limits": "Contracted service and published status do not establish a date-specific bookable flight.",
+      "source_urls": [
+        "https://www.transportation.gov/office-policy/aviation-policy/essential-air-service-reports",
+        "https://www.transportation.gov/policy/aviation-policy/small-community-rural-air-service/essential-air-service"
+      ],
+      "formats": [
+        "XLSX",
+        "PDF",
+        "orders"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "faa_capacity",
+      "name": "FAA airport capacity profiles",
+      "group": "demand",
+      "priority": "optional",
+      "access": "free_export",
+      "coverage": "Selected busy airports.",
+      "update_cadence": "Occasional",
+      "latest_period_verified": "2014 profiles described on current page",
+      "project_use": "Background for congestion and runway-capacity analysis.",
+      "limits": "Old planning assumptions; not current declared capacity or a live operating restriction.",
+      "source_urls": [
+        "https://www.faa.gov/airports/planning_capacity/profiles"
+      ],
+      "formats": [
+        "PDF"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "faa_activity_forecast",
+      "name": "FAA airport activity forecasts",
+      "group": "demand",
+      "priority": "optional",
+      "access": "free_export",
+      "coverage": "Airports in NPIAS; scope described by FAA.",
+      "update_cadence": "Annual",
+      "latest_period_verified": "2025 Terminal Area Forecast data; February 2026 page update",
+      "project_use": "Long-term airport demand and route-network research.",
+      "limits": "This FAA TAF means activity forecast. It differs from the aviation-weather TAF.",
+      "source_urls": [
+        "https://www.faa.gov/data_research/aviation/taf",
+        "https://www.faa.gov/data_research/aviation"
+      ],
+      "formats": [
+        "XLSX",
+        "query tables",
+        "PDF"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "bts_ontime_reporting",
+      "name": "BTS Reporting Carrier On-Time Performance",
+      "group": "history",
+      "priority": "core",
+      "access": "free_no_key",
+      "coverage": "Domestic nonstop flights of reporting operators; not every U.S. carrier.",
+      "update_cadence": "Monthly, with revisions",
+      "latest_period_verified": "August 2026; full series begins 1987",
+      "project_use": "Flight-level scheduled and actual times, cancellations, diversions and delay labels.",
+      "limits": "Retrospective scheduled times cannot establish future service. Reporting coverage changes.",
+      "source_urls": [
+        "https://transtats.bts.gov/TableInfo.asp?QO_fu146_anzr=b0-gvzr&V0s1_b0yB=D&gnoyr_VQ=FGJ",
+        "https://transtats.bts.gov/PREZIP/",
+        "https://www.transtats.bts.gov/releaseinfo.asp"
+      ],
+      "formats": [
+        "CSV ZIP"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "bts_ontime_marketing",
+      "name": "BTS Marketing Carrier On-Time Performance",
+      "group": "history",
+      "priority": "useful",
+      "access": "free_export",
+      "coverage": "Reporting marketing-airline networks and their operating carriers.",
+      "update_cadence": "Monthly",
+      "latest_period_verified": "August 2026; series begins January 2018",
+      "project_use": "Customer-facing brand comparisons and operating/marketing carrier mapping.",
+      "limits": "Overlaps reporting-carrier data. Do not append both files as independent flights.",
+      "source_urls": [
+        "https://transtats.bts.gov/DL_SelectFields.aspx?QO_fu146_anzr=b0-gvzr&gnoyr_VQ=FGK"
+      ],
+      "formats": [
+        "CSV ZIP"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "bts_t100_segment",
+      "name": "BTS T-100 Domestic Segment, All Carriers",
+      "group": "history",
+      "priority": "core",
+      "access": "free_export",
+      "coverage": "Reported U.S. domestic nonstop segments; filter passenger service.",
+      "update_cadence": "Monthly, revised releases",
+      "latest_period_verified": "August 2026",
+      "project_use": "Observed route graph, monthly departures, capacity, passengers, distance and aircraft categories.",
+      "limits": "Monthly aggregates have no flight departure times. Separate passenger service from cargo and charter.",
+      "source_urls": [
+        "https://www.transtats.bts.gov/Fields.asp?gnoyr_VQ=GEE",
+        "https://www.transtats.bts.gov/releaseinfo.asp"
+      ],
+      "formats": [
+        "CSV ZIP"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "bts_t100_market",
+      "name": "BTS T-100 Domestic Market, All Carriers",
+      "group": "history",
+      "priority": "useful",
+      "access": "free_export",
+      "coverage": "Reported domestic on-flight markets.",
+      "update_cadence": "Monthly",
+      "latest_period_verified": "August 2026",
+      "project_use": "On-flight passenger flows by carrier and airport pair.",
+      "limits": "An on-flight market differs from both a nonstop segment and a whole passenger itinerary.",
+      "source_urls": [
+        "https://www.transtats.bts.gov/releaseinfo.asp"
+      ],
+      "formats": [
+        "CSV ZIP"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "bts_db1c",
+      "name": "BTS DB1C / OD40 ticket survey",
+      "group": "history",
+      "priority": "core",
+      "access": "free_no_key",
+      "coverage": "Sampled reported airline passenger tickets; apply domestic itinerary filters.",
+      "update_cadence": "Monthly since July 2025",
+      "latest_period_verified": "July 2026 listed for Ticket, Market, Coupon and Segment files",
+      "project_use": "Historical fares, passenger flows, itinerary paths and connection patterns.",
+      "limits": "40% sample. Not live quotes or inventory. Use the current field definitions and ticket weights.",
+      "source_urls": [
+        "https://www.bts.gov/topics/airlines-and-airports/origin-and-destination-survey-data",
+        "https://www.bts.gov/topics/airlines-and-airports/origin-and-destination-survey-data-ticket",
+        "https://www.bts.gov/topics/airlines-and-airports/origin-and-destination-survey-data-market",
+        "https://www.bts.gov/topics/airlines-and-airports/origin-and-destination-survey-data-coupon",
+        "https://www.bts.gov/topics/airlines-and-airports/origin-and-destination-survey-data-segment"
+      ],
+      "formats": [
+        "ZIP data files",
+        "PDF definitions"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "bts_db1b",
+      "name": "BTS DB1B legacy ticket survey",
+      "group": "history",
+      "priority": "optional",
+      "access": "free_no_key",
+      "coverage": "Historical ticket sample.",
+      "update_cadence": "Quarterly, ended June 2025",
+      "latest_period_verified": "2025 Q2 is final collection period",
+      "project_use": "Longer-run fare and itinerary baselines.",
+      "limits": "10% sample. Keep separate from DB1C until schema, weighting and sampling changes are handled.",
+      "source_urls": [
+        "https://www.bts.gov/topics/airlines-and-airports/origin-and-destination-survey-data",
+        "https://www.bts.gov/topics/airlines-and-airports/origin-and-destination-survey-data-product",
+        "https://transtats.bts.gov/PREZIP/"
+      ],
+      "formats": [
+        "CSV ZIP"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "dot_airfare_report",
+      "name": "DOT Domestic Airfare Consumer Report",
+      "group": "history",
+      "priority": "useful",
+      "access": "free_export",
+      "coverage": "Top domestic city-pair markets; report scope is not all airports.",
+      "update_cadence": "Quarterly with reporting lag",
+      "latest_period_verified": "2026 Q1 report verified; separate BTS average-fare release covers 2026 Q2",
+      "project_use": "Simple route/city fare baselines and competition measures.",
+      "limits": "Averages are historical and may mix trip types. No current bookable fares.",
+      "source_urls": [
+        "https://www.transportation.gov/policy/aviation-policy/domestic-airfare-consumer-report",
+        "https://www.transportation.gov/aviation-analysis/domestic-airline-consumer-airfare-report-1st-quarter-2026",
+        "https://www.bts.gov/newsroom/second-quarter-2026-average-air-fare-increased-20-first-quarter-2026"
+      ],
+      "formats": [
+        "PDF",
+        "download tables"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "dot_consumer_report",
+      "name": "DOT Air Travel Consumer Report",
+      "group": "history",
+      "priority": "useful",
+      "access": "free_export",
+      "coverage": "Reporting airline service measures.",
+      "update_cadence": "Monthly; oversales quarterly",
+      "latest_period_verified": "October 2026 report: August data; oversales 2026 Q2",
+      "project_use": "Baggage, wheelchair, oversales, complaint and service-quality context.",
+      "limits": "Airline-level averages do not establish a particular flight or passenger outcome.",
+      "source_urls": [
+        "https://www.transportation.gov/resources/individuals/aviation-consumer-protection/air-travel-consumer-reports-2026-0",
+        "https://www.transportation.gov/resources/individuals/aviation-consumer-protection/october-2026-air-travel-consumer-report-august"
+      ],
+      "formats": [
+        "PDF",
+        "tables"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "bts_db20",
+      "name": "BTS Data Bank 20",
+      "group": "demand",
+      "priority": "optional",
+      "access": "free_export",
+      "coverage": "Certificated and commuter U.S. carriers; scheduled and nonscheduled activity.",
+      "update_cadence": "Monthly",
+      "latest_period_verified": "August 2026",
+      "project_use": "Traffic, capacity and load-factor checks at broader levels.",
+      "limits": "Aggregates overlap other BTS releases; do not add them to T-100 totals.",
+      "source_urls": [
+        "https://www.bts.gov/browse-statistical-products-and-data/db20"
+      ],
+      "formats": [
+        "download files"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "faa_opsnet",
+      "name": "FAA OPSNET operations and delays",
+      "group": "history",
+      "priority": "useful",
+      "access": "free_export",
+      "coverage": "FAA facility operations and delay reports.",
+      "update_cadence": "Daily records; public release delayed",
+      "latest_period_verified": "Documentation checked; exact latest public month not confirmed",
+      "project_use": "Airport/system congestion history independent of airline-reported delays.",
+      "limits": "Public access follows the 20th of the next month. Definitions differ from airline arrival delay.",
+      "source_urls": [
+        "https://www.aspm.faa.gov/opsnet/sys/main.asp"
+      ],
+      "formats": [
+        "web queries",
+        "exports"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "faa_aspm",
+      "name": "FAA ASPM performance data",
+      "group": "restricted",
+      "priority": "optional",
+      "access": "mixed_public_restricted",
+      "coverage": "Selected airports and performance measures.",
+      "update_cadence": "Varies",
+      "latest_period_verified": "Access rules checked",
+      "project_use": "Airport efficiency and operating constraints where authorized.",
+      "limits": "Complete actual flight/airport data are password-restricted; do not treat full ASPM as open.",
+      "source_urls": [
+        "https://www.aspm.faa.gov/getInfo.asp"
+      ],
+      "formats": [
+        "reports",
+        "restricted data"
+      ],
+      "reuse_notes": "Public reports and restricted products have different access conditions.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "tsa_volumes",
+      "name": "TSA daily checkpoint volumes",
+      "group": "demand",
+      "priority": "optional",
+      "access": "public_page_unconfirmed",
+      "coverage": "National screening totals.",
+      "update_cadence": "Daily",
+      "latest_period_verified": "Official page blocked during research; no latest count claimed",
+      "project_use": "Seasonality and nationwide travel-demand context.",
+      "limits": "Not per-flight demand, seat availability or airport wait times. Screenings differ from boardings.",
+      "source_urls": [
+        "https://www.tsa.gov/travel/passenger-volumes",
+        "https://www.bts.gov/browse-statistical-products-and-data/preliminary-estimates/preliminary-estimates-enplanements-tsa"
+      ],
+      "formats": [
+        "HTML tables"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "awc",
+      "name": "NOAA Aviation Weather Center",
+      "group": "weather",
+      "priority": "core",
+      "access": "free_no_key",
+      "coverage": "METAR/TAF worldwide; hazard coverage varies, including separate Alaska products.",
+      "update_cadence": "Product-dependent; common cache files refresh each minute",
+      "latest_period_verified": "Live feeds; not downloaded here",
+      "project_use": "Airport observations, terminal forecasts, aviation hazards, pilot reports and station metadata.",
+      "limits": "Use bulk caches for broad access. API history is limited; keep issue and valid times.",
+      "source_urls": [
+        "https://aviationweather.gov/data/api/"
+      ],
+      "formats": [
+        "JSON",
+        "GeoJSON",
+        "XML",
+        "CSV",
+        "gzip caches"
+      ],
+      "reuse_notes": "Public NOAA data; retain attribution and distinguish your derived outputs from original NOAA data.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "nws_api",
+      "name": "NWS forecasts and alerts API",
+      "group": "weather",
+      "priority": "useful",
+      "access": "free_no_key",
+      "coverage": "NWS forecast areas; validate coverage by location.",
+      "update_cadence": "As products update",
+      "latest_period_verified": "Current documentation checked",
+      "project_use": "Airport-area forecasts and severe-weather alerts.",
+      "limits": "Required application User-Agent; rate limits apply. Short retained history is not a training archive.",
+      "source_urls": [
+        "https://www.weather.gov/documentation/services-web-api"
+      ],
+      "formats": [
+        "JSON",
+        "GeoJSON",
+        "CAP"
+      ],
+      "reuse_notes": "NWS describes API data as free for any purpose; respect caching and request limits.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "ghcnh",
+      "name": "NOAA GHCNh hourly weather",
+      "group": "weather_history",
+      "priority": "core",
+      "access": "free_no_key",
+      "coverage": "Global land stations; select U.S. airport/weather-station matches.",
+      "update_cadence": "Daily",
+      "latest_period_verified": "Current replacement for ISD; documentation v1.1.0",
+      "project_use": "Historical wind, visibility, temperature, clouds and precipitation for delay models.",
+      "limits": "Keep quality flags and station history; one station is not automatically one airport.",
+      "source_urls": [
+        "https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly",
+        "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/hourly/doc/ghcnh_DOCUMENTATION.pdf",
+        "https://www.ncei.noaa.gov/oa/global-historical-climatology-network/index.html"
+      ],
+      "formats": [
+        "PSV",
+        "Parquet",
+        "archives"
+      ],
+      "reuse_notes": "Public NOAA data; retain attribution and distinguish your derived outputs from original NOAA data.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "legacy_isd",
+      "name": "NOAA ISD legacy hourly weather",
+      "group": "weather_history",
+      "priority": "legacy",
+      "access": "free_no_key",
+      "coverage": "Global historical stations.",
+      "update_cadence": "No new data after 2025-08-24",
+      "latest_period_verified": "Superseded; 2026 service-move notice checked",
+      "project_use": "Reproduce older studies or retain an existing historical pipeline.",
+      "limits": "Do not use an old ISD download script as the current-weather ingestion path.",
+      "source_urls": [
+        "https://www.nesdis.noaa.gov/news/service-location-change-integrated-surface-data-global-hourly"
+      ],
+      "formats": [
+        "NODD archives"
+      ],
+      "reuse_notes": "Public NOAA data; retain attribution and distinguish your derived outputs from original NOAA data.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "iem_metar",
+      "name": "Iowa State IEM airport weather archive",
+      "group": "weather_history",
+      "priority": "useful",
+      "access": "free_no_key",
+      "coverage": "Many U.S. and worldwide airport stations; station history varies.",
+      "update_cadence": "Continuous archive; documented sync cycle",
+      "latest_period_verified": "Current documentation checked",
+      "project_use": "Convenient historical airport observations and raw METAR for research.",
+      "limits": "Limited quality checking; missing values have multiple causes. Keep source and station identifiers.",
+      "source_urls": [
+        "https://www.mesonet.agron.iastate.edu/request/download.phtml?network=IA_ASOS"
+      ],
+      "formats": [
+        "CSV",
+        "text"
+      ],
+      "reuse_notes": "Public university archive; review current terms and cite IEM and upstream providers.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "noaa_hrrr",
+      "name": "NOAA HRRR forecasts and archive",
+      "group": "weather",
+      "priority": "optional",
+      "access": "free_no_key",
+      "coverage": "CONUS and Alaska sectors; not all U.S. islands.",
+      "update_cadence": "Frequent model cycles",
+      "latest_period_verified": "Current NCEP and NOAA-hosted catalog checked",
+      "project_use": "Short-range weather features for disruption forecasting.",
+      "limits": "Large volumes. Select airport areas, variables, model runs and forecast hours.",
+      "source_urls": [
+        "https://www.nco.ncep.noaa.gov/pmb/products/hrrr/",
+        "https://registry.opendata.aws/noaa-hrrr-pds/"
+      ],
+      "formats": [
+        "GRIB2",
+        "Zarr"
+      ],
+      "reuse_notes": "Public NOAA data; retain attribution and distinguish your derived outputs from original NOAA data.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "noaa_gfs",
+      "name": "NOAA GFS forecasts",
+      "group": "weather",
+      "priority": "optional",
+      "access": "free_no_key",
+      "coverage": "Global, including Hawaii and territories.",
+      "update_cadence": "Four model cycles daily",
+      "latest_period_verified": "Current product catalog checked",
+      "project_use": "Broader weather outlook and regions outside HRRR coverage.",
+      "limits": "Coarse forecasts are uncertain; save the forecast as issued for honest backtests.",
+      "source_urls": [
+        "https://www.ncei.noaa.gov/products/weather-climate-models/global-forecast",
+        "https://nomads.ncep.noaa.gov/"
+      ],
+      "formats": [
+        "GRIB2",
+        "model archives"
+      ],
+      "reuse_notes": "Public NOAA data; retain attribution and distinguish your derived outputs from original NOAA data.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "noaa_radar",
+      "name": "NOAA radar and MRMS data",
+      "group": "weather",
+      "priority": "optional",
+      "access": "free_no_key",
+      "coverage": "Product-specific radar coverage.",
+      "update_cadence": "Near real time and archives",
+      "latest_period_verified": "NODD catalog checked",
+      "project_use": "Thunderstorm and precipitation features near airports and along routes.",
+      "limits": "High data volume; radar availability and product coverage vary by region.",
+      "source_urls": [
+        "https://www.noaa.gov/nodd/datasets",
+        "https://www.weather.gov/documentation/services-web-api"
+      ],
+      "formats": [
+        "GRIB2",
+        "radar files",
+        "cloud objects"
+      ],
+      "reuse_notes": "Public NOAA data; retain attribution and distinguish your derived outputs from original NOAA data.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "storm_events",
+      "name": "NOAA Storm Events",
+      "group": "weather_history",
+      "priority": "optional",
+      "access": "free_export",
+      "coverage": "Reported significant U.S. weather events.",
+      "update_cadence": "Delayed periodic updates",
+      "latest_period_verified": "Landing page checked; latest event month not confirmed",
+      "project_use": "Historical event labels and severe-weather case studies.",
+      "limits": "Retrospective reports cannot be used as information available before departure.",
+      "source_urls": [
+        "https://www.ncei.noaa.gov/access/storm-events-database/",
+        "https://www.ncei.noaa.gov/stormevents/ftp.jsp"
+      ],
+      "formats": [
+        "CSV",
+        "web queries"
+      ],
+      "reuse_notes": "Public NOAA data; retain attribution and distinguish your derived outputs from original NOAA data.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "faa_nas_status",
+      "name": "FAA NAS airport status",
+      "group": "live",
+      "priority": "core",
+      "access": "free_no_key",
+      "coverage": "Reported NAS airport delays, ground stops and closures.",
+      "update_cadence": "Live; inspect feed timestamp",
+      "latest_period_verified": "Official XML endpoint linked from FAA FAQ",
+      "project_use": "Current airport disruption flags for candidate itineraries.",
+      "limits": "Airport-level status is not flight-specific status. Empty or unavailable data do not prove normal operations.",
+      "source_urls": [
+        "https://nasstatus.faa.gov/",
+        "https://www.fly.faa.gov/fly/FAQ/faq",
+        "https://nasstatus.faa.gov/api/airport-status-information"
+      ],
+      "formats": [
+        "XML",
+        "website"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "faa_advisories",
+      "name": "FAA ATCSCC advisories",
+      "group": "live",
+      "priority": "useful",
+      "access": "free_export",
+      "coverage": "National airspace traffic-management advisories.",
+      "update_cadence": "As issued; archive queries",
+      "latest_period_verified": "Current public query form checked",
+      "project_use": "Ground programs, route advisories, outages and operating plans.",
+      "limits": "Parse issue/validity times. Text may require review; absence is not proof of no restriction.",
+      "source_urls": [
+        "https://www.fly.faa.gov/adv/advAdvisoryForm",
+        "https://www.faa.gov/air_traffic/publications/aim_html/chap5_section_1.html"
+      ],
+      "formats": [
+        "HTML",
+        "text"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "faa_tfr",
+      "name": "FAA Temporary Flight Restrictions",
+      "group": "live",
+      "priority": "optional",
+      "access": "free_export",
+      "coverage": "Published U.S. TFRs and covered territories.",
+      "update_cadence": "As issued",
+      "latest_period_verified": "FAA help describes JSON/XML list export",
+      "project_use": "Restriction context where relevant to a flight disruption.",
+      "limits": "TFRs are only one subset of restrictions. Not a complete airport-closure dataset.",
+      "source_urls": [
+        "https://tfr.faa.gov/",
+        "https://tfr.faa.gov/tfr3/AboutTFRWebsite.pdf"
+      ],
+      "formats": [
+        "JSON",
+        "XML",
+        "web map"
+      ],
+      "reuse_notes": "Public government release. Retain source attribution and any file-specific notices.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "faa_notam",
+      "name": "FAA NOTAM / NMS data",
+      "group": "restricted",
+      "priority": "useful",
+      "access": "account_or_approval",
+      "coverage": "FAA NOTAM coverage; terms depend on distribution service.",
+      "update_cadence": "As issued",
+      "latest_period_verified": "Current NMS API access page checked",
+      "project_use": "Runway, facility and airport changes affecting service.",
+      "limits": "Public viewing does not equal unrestricted bulk API access. NMS API access must be requested.",
+      "source_urls": [
+        "https://www.faa.gov/about/initiatives/notam",
+        "https://www.faa.gov/about/initiatives/notam/faqs",
+        "https://aa.data.faa.gov/data/"
+      ],
+      "formats": [
+        "API",
+        "AIXM",
+        "messages"
+      ],
+      "reuse_notes": "FAA access agreement and service-specific terms apply.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "faa_swim",
+      "name": "FAA SWIM / SWIFT distribution",
+      "group": "restricted",
+      "priority": "optional",
+      "access": "account_or_approval",
+      "coverage": "Service-specific NAS flight, weather and traffic messages.",
+      "update_cadence": "Near real time",
+      "latest_period_verified": "Current access process checked",
+      "project_use": "Deeper disruption and operational-data research after access approval.",
+      "limits": "Not an anonymous REST feed. Services and reuse depend on the agreement; some services need separate requests.",
+      "source_urls": [
+        "https://www.faa.gov/air_traffic/technology/swim/products/get_connected",
+        "https://www.faa.gov/air_traffic/technology/swim/questions_answers",
+        "https://support.swim.faa.gov/hc/en-us"
+      ],
+      "formats": [
+        "message streams",
+        "XML",
+        "service-specific formats"
+      ],
+      "reuse_notes": "FAA describes data as currently without subscription fees; access agreements and integration costs remain.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "opensky",
+      "name": "OpenSky aircraft observations",
+      "group": "restricted",
+      "priority": "optional",
+      "access": "account_and_license_limits",
+      "coverage": "Receiver-dependent tracking; not complete national coverage.",
+      "update_cadence": "Live and selected archives",
+      "latest_period_verified": "Current API and license checked",
+      "project_use": "Observed movement research under the applicable agreement.",
+      "limits": "Not airline schedules. Current terms require written permission for commercial or operational API use.",
+      "source_urls": [
+        "https://openskynetwork.github.io/opensky-api/rest.html",
+        "https://opensky-network.org/about/terms-of-use"
+      ],
+      "formats": [
+        "JSON",
+        "research datasets"
+      ],
+      "reuse_notes": "Restricted research/education terms; OAuth2 API credentials; no automatic production reuse rights.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "openflights",
+      "name": "OpenFlights legacy route data",
+      "group": "legacy",
+      "priority": "legacy",
+      "access": "free_no_key",
+      "coverage": "Historical global route snapshot.",
+      "update_cadence": "Routes stopped updating in June 2014",
+      "latest_period_verified": "June 2014 route data",
+      "project_use": "Tests or reproduction of older network research only.",
+      "limits": "Unsuitable for current route suggestions.",
+      "source_urls": [
+        "https://openflights.org/data"
+      ],
+      "formats": [
+        "DAT/CSV"
+      ],
+      "reuse_notes": "ODbL and Database Contents License; attribution and relevant sharing terms apply.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "oag",
+      "name": "OAG schedules, status and connections",
+      "group": "licensed",
+      "priority": "gap_option",
+      "access": "account_free_tier_then_licensed",
+      "coverage": "Commercial global schedule coverage; confirm U.S. small-carrier scope.",
+      "update_cadence": "Product-dependent",
+      "latest_period_verified": "Developer page lists limited free-tier access",
+      "project_use": "Future flight instances, connection rules and flight status.",
+      "limits": "Not open bulk data or a booking service; free-tier limits and storage/redistribution terms apply.",
+      "source_urls": [
+        "https://developers.oag.com/",
+        "https://www.oag.com/airline-schedules-data"
+      ],
+      "formats": [
+        "JSON API",
+        "licensed files"
+      ],
+      "reuse_notes": "Provider subscription terms; no purchase or account created here.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    },
+    {
+      "id": "duffel",
+      "name": "Duffel flight offers",
+      "group": "licensed",
+      "priority": "gap_option",
+      "access": "account_and_commercial_terms",
+      "coverage": "Available airline content varies by integration.",
+      "update_cadence": "At search time",
+      "latest_period_verified": "Current offer and test-mode docs checked",
+      "project_use": "Date-specific itineraries with live offers when live access is enabled.",
+      "limits": "Not an open dataset. Test mode can contain unrealistic schedules and prices.",
+      "source_urls": [
+        "https://duffel.com/docs/api/offer-requests",
+        "https://duffel.com/docs/api/overview/test-mode"
+      ],
+      "formats": [
+        "JSON API"
+      ],
+      "reuse_notes": "Commercial service terms and live-access requirements apply; no account created here.",
+      "documentation_checked_on": "2026-11-13",
+      "raw_data_status": "not_downloaded"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>flightopt · risk-priced US flight routing</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark">✈</span> flightopt <span class="tag">risk-priced routing for U.S. flights</span></div>
+  <div id="databadge" class="badge">loading…</div>
+</header>
+<div id="synthetic" class="banner" hidden>SYNTHETIC DEMO DATA — airports are real; carriers (N1, N2, N3, L1, R1, U1), schedules, delays and fares are fictional. Import BTS files for real analysis.</div>
+<nav class="tabs" role="tablist">
+  <button role="tab" class="tab active" data-tab="plan">Plan a trip</button>
+  <button role="tab" class="tab" data-tab="route">Route report</button>
+  <button role="tab" class="tab" data-tab="network">Network</button>
+</nav>
+
+<main>
+<section id="tab-plan" class="panel">
+  <form id="search" class="form">
+    <label>From<input name="origin" list="ap-list" required placeholder="BOS or NYC" autocomplete="off"></label>
+    <label>To<input name="destination" list="ap-list" required placeholder="LAX or LAAREA" autocomplete="off"></label>
+    <label>Date<input name="date" type="date" required></label>
+    <label>Depart after<input name="after" type="time" value="06:00"></label>
+    <label>Depart before<input name="before" type="time" value="22:00"></label>
+    <label>Arrive by<input name="by" placeholder="e.g. 18:00 or 09:00+1"></label>
+    <fieldset class="seg"><legend>Optimize for</legend>
+      <label><input type="radio" name="profile" value="balanced" checked><span>Balanced</span></label>
+      <label><input type="radio" name="profile" value="fastest"><span>Fastest</span></label>
+      <label><input type="radio" name="profile" value="reliable"><span>Reliable</span></label>
+      <label><input type="radio" name="profile" value="cheapest"><span>Cheapest</span></label>
+    </fieldset>
+    <details class="more"><summary>More options</summary>
+      <div class="grid">
+        <label>Max stops<select name="stops"><option value="auto">auto</option><option>0</option><option>1</option><option>2</option></select></label>
+        <label>Value of time $/h<input name="vot" type="number" value="50" min="0" step="5"></label>
+        <label>Nearby airports (mi)<input name="nearby" type="number" value="0" min="0" step="10"></label>
+        <label>Min connection (min)<input name="min_connection" type="number" min="0" placeholder="default"></label>
+        <label>Avoid carriers<input name="avoid" placeholder="e.g. U1"></label>
+        <label class="check"><input type="checkbox" name="separate" value="1"> Allow separate tickets</label>
+      </div>
+    </details>
+    <button class="go" type="submit">Find routes</button>
+  </form>
+  <datalist id="ap-list"></datalist>
+  <div id="plan-out" class="out"></div>
+</section>
+
+<section id="tab-route" class="panel" hidden>
+  <form id="routeform" class="form">
+    <label>From<input name="origin" list="ap-list" required placeholder="ORD"></label>
+    <label>To<input name="destination" list="ap-list" required placeholder="LAX"></label>
+    <label>Timetable date<input name="date" type="date"></label>
+    <button class="go" type="submit">Show route</button>
+  </form>
+  <div id="route-out" class="out"></div>
+</section>
+
+<section id="tab-network" class="panel" hidden>
+  <form id="netform" class="form">
+    <label>Date<input name="date" type="date" required></label>
+    <button class="go" type="submit">Analyze network</button>
+  </form>
+  <div id="net-out" class="out"></div>
+</section>
+</main>
+<div id="tip" class="tip" role="tooltip" hidden></div>
+<footer>Local-only. Historical public data (BTS, FAA, OurAirports, airportsdata). Patterns are not verified schedules; fares are historical, not quotes.</footer>
+<script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flightopt"
+version = "0.1.0"
+description = "Risk-priced US flight route optimizer built on public BTS/FAA data"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.24"]
+
+[project.scripts]
+flightopt = "flightopt.cli:main"
+
+[tool.setuptools]
+packages = ["flightopt"]
+
+[tool.setuptools.package-data]
+flightopt = ["data/*.csv", "data/*.json", "web/*"]
