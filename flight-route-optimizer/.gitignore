@@ -1,0 +1,6 @@
+data/
+*.sqlite
+*.sqlite-*
+__pycache__/
+*.egg-info/
+build/
