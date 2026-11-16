@@ -251,3 +251,22 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
 - Reading: with realistic queue priority the structure still loses on today's 5 m TWAP books — leftovers
   are adversely selected and outweigh the 1–3 ¢ captured per pair. Consistent with gabagool's own
   decline (ETH 5 m, Feb 2026: −$0.51/market) and his stopping in Feb 2026.
+
+### #17 — New structural ideas (after "stop everything"; offline tests only)
+- **REA**: `analyze-javascript-application` on Polymarket's 178 web chunks → Evidence
+  `ev_830299ffc69e84798be24108b8ca4568d9b7515a4a2dd2c8d6fc3267c2e2e196` (107 MB, scratch). The bundle maps
+  variants `5m→fiveminute, 15m→fifteen, 1h→onehour, 4h→fourhour, 1d→oneday`, builds slugs
+  `${asset}-updown-${dur}-${unix}`, groups `chainlink` resolution with fiveminute/fifteen/fourhour, and has
+  gold/silver/Brent/WTI/natgas Up/Down families.
+- **Strike ladder** (`../ladder/`): 5 m and 15 m settle on the same TWAP at shared boundaries (verified to
+  every digit). Up(lower strike) + Down(higher strike) ≥ $1 always, $2 in the middle band (32–36 %).
+  Riskless cost < $1 in 3.6 % (BTC) / 5.3 % (ETH) of windows: +0.44 / +2.52 ¢ per pair, never negative;
+  rare, brief, small.
+- **Commodity ties** (`../commodity/ties.py`): a tie resolves Up, but Polymarket lists gold/silver windows only
+  during trading hours (182 of 384 possible 15 m windows in 4 days) and 0 ties occurred; WTI/natgas launched
+  2026-11-16 with $0 volume. Dead.
+- **Metal ladder** (15 m vs 1 h, Chainlink spot): 88 of 92 hours share F exactly, but the 1 h books are nearly
+  empty ($746–$805 over 45 windows) — no tradable pairs.
+- **Informed maker** (`informed_maker.py`, queue fill model, ~5 h live books): post a bid on the favoured side
+  after a jump instead of taking. −5.0…+3.2 ¢/share, t ≤ 0.5, sign flips between early and late data; fills
+  arrive when sellers disagree (win 0.49–0.58 at price 0.47–0.53). No edge.
