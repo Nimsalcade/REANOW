@@ -226,3 +226,16 @@ At the observed effect size, t_time ≈ 2 needs ~28 slots (~1 more hour of recor
   tape −$1.8…−$4.4; live 5 m books −$0.7…−$2.4/window, even with full at-touch fills and 100 ms requotes and
   inventory-skewed quoting. Our replay captures 1.5–3 % of taker volume vs his 4.4–7.3 %, so its leftovers
   dominate. The edge was queue priority / speed in a thin, fee-free market; next step is an L2 queue model.
+
+### #15 — 19:46Z check-in (329 forward asset-windows; direction sniper 36 slots, F18/F19 15 slots)
+| cand | fills | ¢/share | t | t_time | real-time bot ¢/share (t) |
+|---|---|---|---|---|---|
+| F14 dir j.06 250 ms | 463 | −0.6 | −0.20 | −0.16 | −6.2 (−1.55) |
+| F16 dir j.06 500 ms | 415 | −0.9 | −0.32 | −0.28 | −3.7 (−0.82) |
+| F17 dir slack .04 2 s | 608 | −2.2 | −0.96 | −0.69 | −7.4 (−2.15) |
+| F18 dir cap 2 | 146 | −5.5 | −1.21 | −0.97 | −6.4 (−1.37) |
+| F19 dir no HYPE/BNB | 154 | −4.9 | −1.07 | −0.95 | −3.8 (−0.86) |
+
+Fill-independent jump information (jump ≥ .06, outcome − mid): +3.8 / +7.2 / +4.4 / **+5.7 pts** for
+15:17–16:30 / 16:30–18:00 / 18:22–19:00 / 19:00–19:45Z (t_time 1.99 / 5.90 / 1.98 / 1.94). The signal is
+stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. No new candidate registered.
