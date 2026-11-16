@@ -286,7 +286,34 @@ def taker_snipe(L, w, P):
     return out
 
 
-STRATS = {"taker_value": taker_value, "maker_value": maker_value, "taker_snipe": taker_snipe}
+def snipe_dir(L, w, P):
+    """Direction-only sniper: after a fair-value jump, buy the favoured side if its ask is within
+    `slack` of the decision-time mid (limit is relative to the market, not to the model's level)."""
+    out, last = [], -10 ** 12
+    S = w * 1000
+    look, jump = int(P.get("look_ms", 1000)), P.get("jump", 0.04)
+    for r in range(S + int(P.get("t_from", 5) * 1000), S + int(P.get("t_to", 299) * 1000), int(P.get("step_ms", 100))):
+        if r - last < P.get("gap_ms", 5000):
+            continue
+        f1 = L.fair_fast(w, r, P.get("sig", 1.0), P.get("meas", 1.0))
+        f0 = L.fair_fast(w, r - look, P.get("sig", 1.0), P.get("meas", 1.0))
+        if not f0 or not f1 or abs(f1[0] - f0[0]) < jump:
+            continue
+        a = 0 if f1[0] > f0[0] else 1
+        bk = L.book(w, a, r)
+        if not bk or bk[1] is None or bk[3] is None:
+            continue
+        mid = (bk[1] + bk[3]) / 2
+        if not (P.get("pmin", 0.10) <= mid <= P.get("pmax", 0.90)):
+            continue
+        out.append((r, a, min(0.999, mid + P.get("slack", 0.02)), P.get("shares", 100), f1[0] if a == 0 else 1 - f1[0]))
+        last = r
+        if len(out) >= P.get("max_trades", 3):
+            break
+    return out
+
+
+STRATS = {"taker_value": taker_value, "maker_value": maker_value, "taker_snipe": taker_snipe, "taker_dir": snipe_dir}
 
 
 def run(L, name, P, lat_ms=250):

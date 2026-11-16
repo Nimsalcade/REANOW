@@ -231,7 +231,22 @@ def s_spot_sign(data, win, tape, P):
     return [(t, oi, mk + P.get("slip", 0.02), P.get("shares", 50))]
 
 
-STRATS = {"value": s_value, "favorite": s_favorite, "spot_sign": s_spot_sign}
+def s_fav_bias(data, win, tape, P):
+    """Model-free favourite bias: at checkpoints (seconds to close), buy the side priced in [lo, hi]."""
+    out = []
+    for tau in P.get("taus", (270, 240, 210, 180, 150, 120, 90, 60)):
+        t = win.w + 300 - tau
+        up = tape.last_price(t, 0, max_age=P.get("max_age", 15))
+        if up is None:
+            continue
+        for oi, px in ((0, up), (1, 1 - up)):
+            if P.get("lo", 0.5) <= px <= P.get("hi", 0.8):
+                out.append((t, oi, min(0.999, px + P.get("slip", 0.01)), P.get("shares", 50)))
+                break
+    return out
+
+
+STRATS = {"value": s_value, "favorite": s_favorite, "spot_sign": s_spot_sign, "fav_bias": s_fav_bias}
 
 
 # ---------------------------------------------------------------- runner

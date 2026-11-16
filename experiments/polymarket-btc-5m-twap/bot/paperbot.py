@@ -189,6 +189,8 @@ class Bot:
                         self.value(tag, as_, a, w, r, f, P)
                     elif name == "maker_value":
                         self.maker(tag, as_, a, w, r, f, P)
+                    elif name == "taker_dir":
+                        self.direction(tag, as_, a, w, r, f, P)
                 hist = a.fair_hist[w]
                 f0 = a.fair(w, r)
                 if f0 is not None:
@@ -226,6 +228,24 @@ class Bot:
         ask, edge = bk[2], P.get("edge", 0.02)
         if fp - ask - fee(ask) > edge:
             self.order(tag, as_, w, ai, r, fp - fee(ask) - edge / 2, P.get("shares", 100), fp, P.get("lat_ms", 250))
+
+    def direction(self, tag, as_, a, w, r, f, P):
+        """Direction-only sniper: on a fair-value jump buy the favoured side at <= mid + slack."""
+        st = self.state[(tag, as_, w)]
+        if st.get("n", 0) >= P.get("max_trades", 3) or r - st.get("last", -10 ** 12) < P.get("gap_ms", 5000):
+            return
+        if r < w * 1000 + P.get("t_from", 5) * 1000 or r > w * 1000 + P.get("t_to", 299) * 1000:
+            return
+        f0 = self.fair_ago(a, w, r, P.get("look_ms", 1000))
+        if f0 is None or abs(f - f0) < P.get("jump", 0.04):
+            return
+        ai, fp = (0, f) if f > f0 else (1, 1 - f)
+        bk = a.tob.get((w, ai))
+        if not bk or bk[0] is None or bk[2] is None:
+            return
+        mid = (bk[0] + bk[2]) / 2
+        if P.get("pmin", 0.10) <= mid <= P.get("pmax", 0.90):
+            self.order(tag, as_, w, ai, r, mid + P.get("slack", 0.02), P.get("shares", 100), fp, P.get("lat_ms", 250))
 
     def value(self, tag, as_, a, w, r, f, P):
         st = self.state[(tag, as_, w)]

@@ -22,6 +22,8 @@ for tag, name, P in cfg["candidates"]:
     for as_, (L, ws) in lives.items():
         if P.get("assets") and as_ not in P["assets"]:
             continue
+        if P.get("src", "bn") == "mix" and as_ not in ("btc", "eth", "sol", "xrp", "doge", "hype"):
+            continue
         if P.get("src", "bn") != "bn":
             key = (as_, P["src"])
             if key not in alt_src:

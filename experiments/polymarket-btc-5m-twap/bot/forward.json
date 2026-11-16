@@ -174,7 +174,52 @@
     ],
     "first_window": 1794843600
    }
+  ],
+  [
+   "F14",
+   "taker_dir",
+   {
+    "jump": 0.06,
+    "slack": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 250,
+    "first_window": 1794846600
+   }
+  ],
+  [
+   "F15",
+   "taker_dir",
+   {
+    "jump": 0.04,
+    "slack": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 250,
+    "first_window": 1794846600
+   }
+  ],
+  [
+   "F16",
+   "taker_dir",
+   {
+    "jump": 0.06,
+    "slack": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 500,
+    "first_window": 1794846600
+   }
+  ],
+  [
+   "F17",
+   "taker_dir",
+   {
+    "jump": 0.06,
+    "slack": 0.04,
+    "look_ms": 2000,
+    "lat_ms": 250,
+    "first_window": 1794846600
+   }
   ]
  ],
- "note2": "F9-F13 frozen 2026-11-16T15:47Z after the first 2 forward slots; scored from window 1794843600 (15:50Z)."
+ "note2": "F9-F13 frozen 2026-11-16T15:47Z after the first 2 forward slots; scored from window 1794843600 (15:50Z).",
+ "note3": "F14-F17 (direction-only sniper) frozen 2026-11-16T16:25Z after an in-sample sweep (93% of 96 configs positive); scored from window 1794846600 (16:30Z)."
 }

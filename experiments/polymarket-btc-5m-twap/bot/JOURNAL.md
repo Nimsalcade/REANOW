@@ -129,3 +129,22 @@ alt-only forward candidates (F10, F12, F13, scored from 15:50Z) decide it.
 - `labels.py` backfills official open/close for any recorded window that lacks one (`data/labels/`).
 - The bot's in-memory fills for the 15:50 window were lost with the process; the replay forward
   test (`forward.py`) still scores that window from the recording and the official label.
+
+### #10 — Forward after 62 asset-windows (9 slots): sniper ≈ 0; price bias = selection; jump info is real
+- Forward (F1–F8, 15:35–16:20Z): snipers +2.8 / −0.9 / +2.8 / −1.3 ¢/share (t_time 0.75 / −0.2 / 0.65 / −0.38);
+  makers −7.8 / −2.4 ¢; late value +3.4 ¢ (n 28); endgame −14.6 ¢ (n 11). Real-time ledger agrees (−8…+2 ¢).
+  Snipers bought at win rate 0.60 ≈ price 0.60: no edge after fees with the model-level gate.
+- History price-bias study (1.48 M BTC taker buys, time split): buying at 0.5–0.8 earned +2…+8 ¢/share and
+  0.2–0.5 lost −4…−10 ¢ in **both** halves (ETH similar, noisier). But a clean rule buying the favourite at
+  fixed checkpoints earns nothing (win 0.604 vs price 0.595; −0.7…−2.7 ¢ after fees). The print-level
+  "bias" is **selection**: the takers whose buys win are informed at that moment. The market is calibrated
+  at random times.
+- At live fair-value jumps (|Δ| ≥ 4 pts in 1 s), direction-adjusted **outcome − mid = +7.2 pts**
+  (1,049 triggers, se 1.5; per-asset window-clustered t +1.1…+4.1; HYPE ≈ 0). The model's own fair − mid is
+  only +4.9 pts: the information is in the **direction** of the jump; the model-level gate (fair − ask − fee >
+  edge) selected the most overconfident triggers.
+- New **direction-only sniper** (`taker_dir`): on a jump buy the favoured side at ≤ mid + slack. In-sample
+  sweep (96 configs, all live data): **93 % positive, median +6.7 ¢/share**; central config
+  jump .06 / slack .02 / 1 s / 250 ms: +12.5 ¢/share, 119 fills, t 2.76, t_time 2.61; positive on all 7 assets
+  (BTC +10, ETH +19, SOL +17, XRP +6, DOGE +7, BNB +6, HYPE +32 ¢).
+- Pre-registered **F14–F17** at 16:25Z, scored from 16:30Z only; added to the real-time bot.
