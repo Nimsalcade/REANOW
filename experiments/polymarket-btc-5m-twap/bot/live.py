@@ -29,7 +29,7 @@ LIVE = os.path.join(HERE, "data", "live")
 
 def load_rows():
     rows = []
-    for f in sorted(glob.glob(os.path.join(LIVE, "*.jsonl*"))):
+    for f in sorted(glob.glob(os.path.join(LIVE, "*.jsonl*"))) + glob.glob(os.path.join(LIVE, "..", "labels", "*.jsonl")):
         op = gzip.open if f.endswith(".gz") else open
         with op(f, "rt") as fh:
             for line in fh:

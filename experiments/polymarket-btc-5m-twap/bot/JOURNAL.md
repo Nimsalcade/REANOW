@@ -121,3 +121,11 @@ Median share of a ≥4-point fair-value jump reflected in the Up mid:
 
 Alt books stay stale for seconds. Either free edge or makers who correctly ignore the jump — the
 alt-only forward candidates (F10, F12, F13, scored from 15:50Z) decide it.
+
+### #9 — Outage 15:53:07–15:59:23Z (environment), fixed
+- The VM was suspended ~5 min after the session went idle; detached (`setsid nohup`) processes died
+  (uptime reset at 15:58:17). Data gap: 15:53:07–15:59:23Z; the 15:50 window is only partly recorded.
+- Fix: recorder, paper bot and sweep now run as harness-tracked background tasks (2 h, re-launched).
+- `labels.py` backfills official open/close for any recorded window that lacks one (`data/labels/`).
+- The bot's in-memory fills for the 15:50 window were lost with the process; the replay forward
+  test (`forward.py`) still scores that window from the recording and the official label.
