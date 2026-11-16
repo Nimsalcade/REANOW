@@ -225,6 +225,15 @@ function tick() {
     if (now >= st.S + 900 && !st.settling) { st.settling = true; settle(st).finally(() => active.delete(key)); }
   }
 }
+// Rebuild running totals from earlier runs in the same output folder, so restarts keep the ledger cumulative.
+function loadTotals() {
+  const read = (f) => { try { return fs.readFileSync(path.join(OUT, f), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)); } catch { return []; } };
+  for (const r of read('settled.jsonl')) {
+    totals.pairs += r.pairs; totals.cost += r.cost; totals.pnl += r.pnl; totals.windows.add(`${r.asset}:${r.S}`);
+  }
+  totals.opps += read('opportunities.jsonl').length;
+}
+loadTotals();
 setInterval(tick, 2000); tick(); writeLedger();
 log(`ladder paper bot started: ${ASSETS.join(',')} | min edge ${MIN_EDGE} | latency ${LATENCY_MS} ms | output ${OUT}`);
 log('waiting for the final 5 minutes of the current 15-minute window (minute 10-15, 25-30, 40-45, 55-60)');
