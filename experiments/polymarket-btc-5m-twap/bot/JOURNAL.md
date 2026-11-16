@@ -105,3 +105,19 @@ variants stay in the log.
   multi-venue aggregate; BTC makers leave those quotes up knowingly. Composite (Binance+Coinbase)
   barely changes the 60 s-average fit (BTC 0.098 vs 0.099 bp), so this needs outcome data → registered
   as a forward variant, not assumed.
+
+### #8 — Book reaction speed by asset (live, 15:17–15:48Z)
+Median share of a ≥4-point fair-value jump reflected in the Up mid:
+
+| asset | jumps | +500 ms | +1 s | +2 s | +3 s | +8 s |
+|---|---|---|---|---|---|---|
+| BTC | 120 | 13 % | 23 % | 49 % | 52 % | 69 % |
+| ETH | 46 | 0 | 5 % | 16 % | 28 % | 59 % |
+| SOL | 66 | 0 | 10 % | 9 % | 23 % | 39 % |
+| XRP | 52 | 0 | 9 % | 0 | −8 % | 36 % |
+| DOGE | 43 | 0 | 9 % | 17 % | 16 % | 36 % |
+| BNB | 45 | 0 | 0 | 0 | 24 % | 89 % |
+| HYPE | 29 | 0 | 7 % | 3 % | 32 % | 3 % |
+
+Alt books stay stale for seconds. Either free edge or makers who correctly ignore the jump — the
+alt-only forward candidates (F10, F12, F13, scored from 15:50Z) decide it.
