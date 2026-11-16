@@ -211,3 +211,7 @@ At the observed effect size, t_time ≈ 2 needs ~28 slots (~1 more hour of recor
 - **Reading:** forward information at jumps (~3 pts) ≈ taker costs (fee 0.07·p(1−p) ≈ 1.75 ¢ at mid plus
   ~0.7–1 ¢ half-spread). At ~250 ms latency the edge is about the size of the costs; the in-sample
   +8–12 ¢ results were selection.
+- Price-bucket check of jump triggers (fee is lower away from 0.5): net ¢/share at the real ask
+  [0.05,0.20) −8.5, [0.20,0.35) +4.1, [0.35,0.50) +5.2, [0.50,0.65) −0.6, [0.65,0.80) +9.6, [0.80,0.95) −7.4
+  (se 4–8 ¢). Extremes are worst and adjacent middle buckets disagree → noise, not a fee effect. No
+  candidate registered from it.
