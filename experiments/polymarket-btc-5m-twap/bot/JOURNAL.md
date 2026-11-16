@@ -215,3 +215,14 @@ At the observed effect size, t_time ≈ 2 needs ~28 slots (~1 more hour of recor
   [0.05,0.20) −8.5, [0.20,0.35) +4.1, [0.35,0.50) +5.2, [0.50,0.65) −0.6, [0.65,0.80) +9.6, [0.80,0.95) −7.4
   (se 4–8 ¢). Extremes are worst and adjacent middle buckets disagree → noise, not a fee effect. No
   candidate registered from it.
+
+### #14 — Decoding gabagool22 (user-supplied fills + public data) and trying to reproduce it
+- Structure: resting bids on **both** outcomes (a two-sided market maker on Up via mirrored books), merge
+  matched pairs for $1 (500 MERGEs worth $256 k in 3 days), redeem the small leftover; 76–91 % maker fills;
+  daily MAKER_REBATEs from 2026-01-08 ($50.5 k). Details and evidence: `../gabagool/README.md`.
+- Track record (28,620 markets): $813 k realized; pair cost median 0.9852, balance 0.987; **103 % of P&L from
+  locked pairs**, leftovers −$27 k (heavier side won 38 %). Decaying from 94 % to 71 % BTC 15 m win rate by Feb 2026.
+- Reproduction on our data loses in every configuration: Oct 2025 tape replay −$2.5…−$7.4/market; Nov 2026
+  tape −$1.8…−$4.4; live 5 m books −$0.7…−$2.4/window, even with full at-touch fills and 100 ms requotes and
+  inventory-skewed quoting. Our replay captures 1.5–3 % of taker volume vs his 4.4–7.3 %, so its leftovers
+  dominate. The edge was queue priority / speed in a thin, fee-free market; next step is an L2 queue model.

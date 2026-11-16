@@ -63,6 +63,10 @@ def run_window(L, w, P):
                         continue
             mode = P.get("mode", "join")
             want = bb + TICK if mode == "improve" and bb + TICK < ba else bb - TICK if mode == "below" else bb
+            if P.get("lean", 0) and q[o] - q[s] >= P.get("lean_min", 1):
+                want = ba - TICK                                   # light side: top of book up to the cap
+            elif q[s] > q[o]:
+                want = bb - P.get("heavy_back", 0) * TICK          # heavy side: stay passive
             px = floor_tick(min(want, cap))
             if px < P.get("pmin", 0.02) or px >= ba:
                 continue

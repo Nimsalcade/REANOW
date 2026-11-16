@@ -47,3 +47,41 @@ It is a **two-sided market maker on each Up/Down book, expressed as two buy book
 - The current 5-minute markets (Nov 2026) are tighter (BTC spread usually 1 tick → at most 1 ¢ per
   pair at the touch), so the same structure must be re-tested on today's books; see `../bot/pairmaker.py`
   and `../bot/JOURNAL.md`.
+
+## Full track record (28,620 closed markets, `evidence/positions-closed.json`, not committed: 70 MB)
+
+| Metric | Value |
+|---|---|
+| Realized P&L | **$812,993** over 2025-10-29 … 2026-02-20 |
+| Markets with both outcomes held | 99.9 % |
+| Median pair cost / median balance (min/max shares) | **0.9852 / 0.987** |
+| Pair cost < 1 | 80.1 % of markets |
+| Profitable markets | 81.3 % (mean $28.41, median $20.80) |
+| P&L from locked pairs (pairs × (1 − pair cost)) | **$840,363 = 103 %** of total; leftovers −$27,353 |
+| Heavier side won | **38.4 %** — no directional skill; leftovers are adversely selected but tiny (median 1.34 % of size) |
+| Mix | BTC/ETH 15 m (≈10.6 k each), BTC/ETH hourly (≈2.7 k each), BTC 5 m from Feb 2026 (1,756), ETH 5 m (122) |
+
+Decay: BTC 15 m win rate 94 % (Oct) → 92 % (Nov) → 96 % (Dec) → 82 % (Jan, fees + rebates start) → 71 % (Feb);
+ETH 5 m in Feb −$0.51/market (48 % win). Trading stops ~2026-02-20.
+
+## Reproduction attempt
+
+- **Accounting reproduced exactly** from the user's fills (`decode.py`): pair cost 0.9818 / 0.9821, matched
+  pairs 291.8 / 300.9, realized −$1.75 / −$2.94 in the sample windows (both resolved Down).
+- **Strategy simulation does not reproduce the profit.** Same structure (bids on both outcomes, cap on pair
+  cost, inventory limit, optional taker top-ups, inventory-skewed "lean" quotes, early stop, price bounds):
+  - Oct 2025 15 m BTC/ETH, 384 markets, tape-based replay with the touch rebuilt from prints, no fees
+    (`tape_pair.py`): **−$2.5 … −$7.4 per market**, win share 16–25 % in every configuration
+    (gabagool actual in Oct: +$10–15 per market, 87–94 % wins).
+  - Nov 2026 15 m BTC/ETH, 384 markets, same replay with today's fee: −$1.8 … −$4.4 per market.
+  - Nov 2026 5 m, all 7 assets, live recorded books (`../bot/pairmaker.py`), trade-through or full at-touch
+    fills, 1 s / 250 ms / 100 ms requotes: −$0.7 … −$2.4 per window.
+- Validation on the exact 09:00 windows: the replay fills 55–85 times at broadly similar prices but ends
+  far less balanced (30–50 shares over) and collects ~1.5–3 % of taker volume vs gabagool's
+  **4.4 % (BTC) / 7.3 % (ETH)**.
+- **Reading:** the structure is fully decoded, but the profit came from execution — queue priority at the
+  touch on both sides with fast re-pricing (and thin competition, fee-free, in late 2025). That buys 2–3× the
+  two-sided volume, which keeps leftovers at ~1 % and lets the 1.5 ¢ per-pair spread win. Paper replays
+  from tapes or 1 s books cannot grant queue priority, so they systematically under-fill the benign flow and
+  over-weight adverse sweeps. Validating it needs an L2 queue-position model on recorded books (next
+  step) or real orders.
