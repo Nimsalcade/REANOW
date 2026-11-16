@@ -218,8 +218,39 @@
     "lat_ms": 250,
     "first_window": 1794846600
    }
+  ],
+  [
+   "F18",
+   "taker_dir",
+   {
+    "jump": 0.06,
+    "slack": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 250,
+    "max_trades": 2,
+    "first_window": 1794853800
+   }
+  ],
+  [
+   "F19",
+   "taker_dir",
+   {
+    "jump": 0.06,
+    "slack": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 250,
+    "assets": [
+     "btc",
+     "eth",
+     "sol",
+     "xrp",
+     "doge"
+    ],
+    "first_window": 1794853800
+   }
   ]
  ],
  "note2": "F9-F13 frozen 2026-11-16T15:47Z after the first 2 forward slots; scored from window 1794843600 (15:50Z).",
- "note3": "F14-F17 (direction-only sniper) frozen 2026-11-16T16:25Z after an in-sample sweep (93% of 96 configs positive); scored from window 1794846600 (16:30Z)."
+ "note3": "F14-F17 (direction-only sniper) frozen 2026-11-16T16:25Z after an in-sample sweep (93% of 96 configs positive); scored from window 1794846600 (16:30Z).",
+ "note4": "F18-F19 frozen 2026-11-16T18:26Z from a feature/neighbourhood study over 15:17-17:59Z; scored from window 1794853800 (18:30Z)."
 }

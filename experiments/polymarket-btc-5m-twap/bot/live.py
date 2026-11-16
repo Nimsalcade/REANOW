@@ -306,6 +306,10 @@ def snipe_dir(L, w, P):
         mid = (bk[1] + bk[3]) / 2
         if not (P.get("pmin", 0.10) <= mid <= P.get("pmax", 0.90)):
             continue
+        if "max_moved" in P:   # skip if the favoured side's mid already repriced during the look window
+            b0 = L.book(w, a, r - look)
+            if b0 and b0[1] is not None and b0[3] is not None and mid - (b0[1] + b0[3]) / 2 > P["max_moved"]:
+                continue
         out.append((r, a, min(0.999, mid + P.get("slack", 0.02)), P.get("shares", 100), f1[0] if a == 0 else 1 - f1[0]))
         last = r
         if len(out) >= P.get("max_trades", 3):

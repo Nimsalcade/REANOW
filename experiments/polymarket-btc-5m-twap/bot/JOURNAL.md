@@ -180,3 +180,16 @@ Status: the **direction-only sniper with jump ≥ 6 pts** is the only candidate 
 and the real-time bot, at 250 ms and 500 ms latency. It is not yet significant (t_time 1.4–1.55 on 17 slots).
 At the observed effect size, t_time ≈ 2 needs ~28 slots (~1 more hour of recording) and ≈ 3 needs ~64 slots
 (~4 more hours). Everything else tested is ≈ 0 or negative after fees.
+
+### #12 — Restart (18:22Z) and F14 neighbourhood study (all data 15:17–17:59Z, discovery only)
+- Recording resumed 18:22Z after the background-limit stop (gap 17:59–18:22Z; VM had slept).
+- F14 fills by feature (365 fills, +9.2 ¢/share): most triggers fall 180–300 s before close (cap of 3
+  per window is spent early); if the favoured side's mid already moved > 5 pts during the jump, −3.1 ¢;
+  BNB −5.1 ¢ and HYPE −3.0 ¢ over the whole recording.
+- Variants vs F14 (+9.5 ¢, t_time 2.76 over 31 slots, in+forward mixed):
+  cap 10 → +3.2 ¢ (later triggers in a window carry less information); cap 2 → +10.7 ¢ (t_time 3.26);
+  cap 1 → +6.6 ¢; repricing filter → +9.7 ¢; no HYPE/BNB → +10.3 ¢; jump .07 → +5.3 ¢; jump .08 → +2.4 ¢;
+  look 0.7 s → +7.7 ¢; look 1.5 s → +7.4 ¢; slack .01 → +8.8 ¢; 500 ms latency with cap 1 → +1.9 ¢.
+- Reading: the neighbourhood is positive almost everywhere but bumpy, so F14 sits near a noisy peak;
+  a fair estimate of the true edge is the neighbourhood's typical +5–7 ¢/share, not +9.5 ¢.
+- Pre-registered F18 (cap 2) and F19 (F14 without HYPE/BNB), scored from 18:30Z.
