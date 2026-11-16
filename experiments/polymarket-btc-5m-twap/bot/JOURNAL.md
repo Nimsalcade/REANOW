@@ -239,3 +239,15 @@ At the observed effect size, t_time ≈ 2 needs ~28 slots (~1 more hour of recor
 Fill-independent jump information (jump ≥ .06, outcome − mid): +3.8 / +7.2 / +4.4 / **+5.7 pts** for
 15:17–16:30 / 16:30–18:00 / 18:22–19:00 / 19:00–19:45Z (t_time 1.99 / 5.90 / 1.98 / 1.94). The signal is
 stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. No new candidate registered.
+
+### #16 — Pair maker with a price-time queue fill model (live 5 m books, all 7 assets, ~300 windows)
+- New `fill=queue` mode in `pairmaker.py`: a bid joins behind the size resting at its price (1 s depth
+  snapshot; a fresh better price starts first), sells printing at that price eat the queue ahead first,
+  prints through the price fill fully, re-pricing resets the queue, cancellations ahead are ignored.
+- 48 configs (join/improve × lean × margin/imbalance × stop 60/120 s × price floor 0.1/0.3), 250 ms
+  requotes: **all negative**, −$0.59…−$2.17 per window (best: improve, max_imb 10, t_stop 120, pmin 0.1:
+  −$0.59, t_time −2.0). Locked pair profit $55…$464; leftovers −$259…−$1,050; estimated rebates
+  +$0.10…+$0.28 per window.
+- Reading: with realistic queue priority the structure still loses on today's 5 m TWAP books — leftovers
+  are adversely selected and outweigh the 1–3 ¢ captured per pair. Consistent with gabagool's own
+  decline (ETH 5 m, Feb 2026: −$0.51/market) and his stopping in Feb 2026.

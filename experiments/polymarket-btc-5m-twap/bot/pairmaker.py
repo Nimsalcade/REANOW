@@ -40,6 +40,17 @@ def run_window(L, w, P):
     taker_fees, rebate, maker_fills, taker_fills = 0.0, 0.0, 0, 0
     rq, lat, m = P.get("rq_ms", 1000), P.get("lat_ms", 250), P.get("margin", 0.01)
     clip, max_imb = P.get("clip", 10), P.get("max_imb", 30)
+    orders = {}   # side -> {"px", "ahead", "left"} (queue fill model)
+
+    def size_at(a, px, r_):
+        d = L.depth_at(w, a, r_)
+        if not d:
+            return 0.0
+        for lp, ls in d[1]:
+            if abs(lp - px) < 1e-9:
+                return ls
+        return 0.0
+
     for r in range(S + int(P.get("t_from", 5) * 1000), E - int(P.get("t_stop", 10) * 1000), rq):
         books = [L.book(w, a, r) for a in (0, 1)]
         if not all(b and b[1] is not None and b[3] is not None for b in books):
@@ -71,6 +82,43 @@ def run_window(L, w, P):
             if px < P.get("pmin", 0.02) or px >= ba:
                 continue
             quotes[s] = [round(px, 2), clip]
+        if P.get("fill", "through") == "queue":
+            # keep queue position when the price is unchanged; otherwise re-post at the back of the new level
+            for s_ in (0, 1):
+                if s_ not in quotes:
+                    orders.pop(s_, None)
+                    continue
+                px = quotes[s_][0]
+                od = orders.get(s_)
+                if od and abs(od["px"] - px) < 1e-9:
+                    od["left"] = clip
+                else:
+                    bb_s = books[s_][1]
+                    ahead = size_at(s_, px, r + lat) if px <= bb_s + 1e-9 else 0.0
+                    orders[s_] = {"px": px, "ahead": ahead, "left": clip}
+            j = bisect.bisect_right(tts, r + lat)
+            while j < len(tr) and tr[j][0] <= r + rq + lat:
+                ts, ta, price, size, side = tr[j]
+                for s_, od in orders.items():
+                    if od["left"] <= 0:
+                        continue
+                    hit_px = price if ta == s_ else 1 - price
+                    seller = (ta == s_ and side == "SELL") or (ta == 1 - s_ and side == "BUY")
+                    if not seller:
+                        continue
+                    if hit_px < od["px"] - 1e-9:
+                        avail = size                          # print through our price
+                    elif abs(hit_px - od["px"]) < 1e-9:
+                        eat = min(od["ahead"], size); od["ahead"] -= eat; avail = size - eat
+                    else:
+                        continue
+                    x = min(avail, od["left"], max(0.0, max_imb - (q[s_] - q[1 - s_])))
+                    if x <= 0:
+                        continue
+                    od["left"] -= x; q[s_] += x; c[s_] += x * od["px"]; maker_fills += 1
+                    rebate += P.get("rebate_rate", 0.2) * x * fee(od["px"])
+                j += 1
+            continue
         if not quotes:
             continue
         j = bisect.bisect_right(tts, r + lat)
