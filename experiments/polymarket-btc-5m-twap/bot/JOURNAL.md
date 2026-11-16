@@ -59,3 +59,31 @@ variants stay in the log.
   ~1/6 of the fills the websocket shows (433 vs 2,485 in one window). Maker results are dominated by
   stale-quote adverse selection the 4 s shift exaggerates. Decision: evaluate takers and makers on
   the live recordings (ms timestamps, real books) instead.
+
+### #3 — Live book reaction speed (event study, BTC, 77 jumps)
+- Event: model fair value moves ≥ 4 points within 1 s (driven by Binance). Measure the share of that
+  move reflected in Polymarket's Up mid afterwards.
+- +200 ms: **4 %**, +500 ms: 22 %, +1 s: 37 %, +2 s: 58 %, +3 s: 61 %.
+- The book is almost fully stale for the first ~300 ms after a spot-driven jump → a taker that reacts
+  within ~250 ms sees stale asks. Candidate: **jump sniper** (`taker_snipe`).
+
+### #4 — Pre-open / open bias (live) — already priced
+- Mid at the open vs model fair at the open (BTC): 0.535 vs 0.529, 0.535 vs 0.534, 0.595 vs 0.591.
+- Market makers already price the lagging price-to-beat. Dropped as a standalone edge.
+
+### #5 — Scale-up and pre-registration
+- All seven assets (BTC, ETH, SOL, XRP, DOGE, BNB, HYPE) run identical 5 m TWAP-60 markets with the
+  same fees; recorder v2 records all of them from 15:30:43Z (7× the sample rate; thinner alt books
+  may be slower).
+- Live calibration (receive-time, 1 Hz TWAP): Binance lag 4 s, median error $0.28, p99 $1.27;
+  Coinbase lag 4 s $0.32; Kraken lag 3 s $0.40; RTDS Chainlink spot lag 2 s $0.12 (std 0.62).
+- `progress.py` sweeps 222 configs every 20 min (in-sample, for discovery only).
+- **Forward test pre-registered** in `forward.json` at 15:35Z: 8 candidates (4 snipers, 2 makers,
+  2 value takers), scored only on windows starting ≥ 1794843300 (15:35Z). Only these count as results.
+
+### #6 — Real-time paper bot live; per-asset lag
+- `paperbot.py` tails the recorder in real time (incremental state per asset), runs the 8 frozen
+  candidates as paper orders, fills takers against the book as it is 250 ms later, fills makers on
+  trade-through prints, settles from the TWAP stream, and writes `data/paper/ledger.md`. Started 15:37Z.
+- Per-asset lag (Binance → Chainlink average, outcome-free calibration): 4 s for BTC/ETH/SOL/XRP/DOGE/BNB
+  (errors 0.10–0.19 bp), **6 s for HYPE** (0.22 bp; its Chainlink feed evidently weights other venues).

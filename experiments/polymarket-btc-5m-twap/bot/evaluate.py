@@ -17,7 +17,7 @@ def main():
     for as_ in assets:
         try:
             L = LV.Live(asset=as_, rows=rows)
-            n = len([w for w in L.labels if w in L.windows and (w, 0) in L.tob])
+            n = len([w for w in L.F if w in L.windows and (w, 0) in L.tob and w in L.K])
             if n: lives[as_] = (L, n)
         except Exception as e:
             print(as_, "skipped:", e)

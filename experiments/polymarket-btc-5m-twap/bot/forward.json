@@ -1,0 +1,15 @@
+{
+  "frozen_at": "2026-11-16T15:35:00Z",
+  "first_window": 1794843300,
+  "note": "Pre-registered before any forward window resolved; chosen by mechanism, not by in-sample rank.",
+  "candidates": [
+    ["F1", "taker_snipe", {"jump": 0.04, "edge": 0.02, "look_ms": 1000, "lat_ms": 250}],
+    ["F2", "taker_snipe", {"jump": 0.06, "edge": 0.04, "look_ms": 1000, "lat_ms": 250}],
+    ["F3", "taker_snipe", {"jump": 0.04, "edge": 0.04, "look_ms": 2000, "lat_ms": 250}],
+    ["F4", "taker_snipe", {"jump": 0.04, "edge": 0.02, "look_ms": 1000, "lat_ms": 500}],
+    ["F5", "maker_value", {"margin": 0.03, "requote_ms": 250, "join_only": 1, "lat_ms": 250}],
+    ["F6", "maker_value", {"margin": 0.02, "requote_ms": 100, "join_only": 0, "lat_ms": 250}],
+    ["F7", "taker_value", {"t_from": 240, "t_to": 300, "edge": 0.03, "lat_ms": 250, "pmax": 0.995}],
+    ["F8", "taker_value", {"t_from": 285, "t_to": 300, "edge": 0.01, "lat_ms": 250, "pmax": 0.995}]
+  ]
+}

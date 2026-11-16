@@ -42,6 +42,7 @@ def load_rows():
 
 
 ASSETS = ["btc", "eth", "sol", "xrp", "doge", "bnb", "hype"]
+LAGS = {"hype": 6}   # Binance -> Chainlink-average lag in seconds, calibrated per asset (default 4)
 
 
 def fee(p):
@@ -59,7 +60,8 @@ def num(v):
 
 
 class Live:
-    def __init__(self, lag=4, delta_n=12, sigma_halflife=600, source="bn", asset="btc", rows=None):
+    def __init__(self, lag=None, delta_n=12, sigma_halflife=600, source="bn", asset="btc", rows=None):
+        lag = LAGS.get(asset, 4) if lag is None else lag
         self.lag, self.source, self.asset = lag, source, asset
         rows = [r for r in (rows if rows is not None else load_rows()) if r.get("as", "btc") == asset]
         spot_t, spot_v = [], []
@@ -115,6 +117,12 @@ class Live:
             self.d_recv.append(recv)
             self.d_val.append(float(np.median(raw[-delta_n:])))
         self.raw_delta = raw
+        # K and F straight from the TWAP stream (exactly the official open/close); labels cross-check.
+        tw_at = {T: v for _, T, v in self.twap}
+        self.K = {w: tw_at[w] for w in self.windows if w in tw_at}
+        self.F = {w: tw_at[w + 300] for w in self.windows if w + 300 in tw_at}
+        for w, (o, c) in self.labels.items():
+            self.K.setdefault(w, o); self.F.setdefault(w, c)
         res = np.array(raw[1:]) - np.array(self.d_val[:-1]) if len(raw) > 30 else np.array([0.0])
         self.meas = float(np.std(res)) if len(res) > 30 else None   # calibrated measurement error (price units)
         self.tob_t = {k: [x[0] for x in v] for k, v in self.tob.items()}
@@ -142,10 +150,28 @@ class Live:
         i = bisect.bisect_right(self.depth_t.get(key, []), r) - 1
         return self.depth[key][i] if i >= 0 else None
 
+    def fair_fast(self, w, r, sig=1.0, meas=1.0, step=100):
+        """Cached fair value on a 100 ms grid (floor of r to the grid; uses info at the grid time)."""
+        key = (w, sig, meas)
+        g = self.__dict__.setdefault("_fg", {}).get(key)
+        if g is None:
+            r0 = (w - 120) * 1000
+            vals = []
+            for r_ in range(r0, (w + 305) * 1000, step):
+                f = self.fair(w, r_, sig, meas)
+                vals.append(f[0] if f else np.nan)
+            g = (r0, np.array(vals))
+            self._fg[key] = g
+        r0, arr = g
+        i = (r - r0) // step
+        if i < 0 or i >= len(arr) or np.isnan(arr[i]):
+            return None
+        return (float(arr[i]), None)
+
     def fair(self, w, r, sig=1.0, meas=1.0):
         """meas multiplies the calibrated measurement error (self.meas)."""
-        K = self.labels[w][0]
-        if self.meas is None:
+        K = self.K.get(w)
+        if self.meas is None or K is None:
             return None
         meas = meas * self.meas
         L = self.lag
@@ -154,7 +180,9 @@ class Live:
         s_now = int(t)
         bnow = self.spot_at(r)
         delta = self.delta_at(r)
-        if bnow is None or delta is None or s_now - 1 - self.s0 < 0:
+        if bnow is None or delta is None or s_now - 1 - self.s0 < 0 or s_now - self.s0 >= len(self.bsec):
+            return None
+        if s_now > E1 and E1 - self.s0 >= len(self.bsec):
             return None
         sigma = self.sigma[min(s_now - 1 - self.s0, len(self.sigma) - 1)] * sig
         if s_now < E1 - 60:
@@ -178,7 +206,7 @@ def taker_value(L, w, P):
     out = []
     S = w * 1000
     for r in range(S + int(P.get("t_from", 0) * 1000), S + int(P.get("t_to", 300) * 1000), int(P.get("step_ms", 100))):
-        f = L.fair(w, r, P.get("sig", 1.0), P.get("meas", 1.0))
+        f = L.fair_fast(w, r, P.get("sig", 1.0), P.get("meas", 1.0))
         if not f:
             continue
         p_up = f[0]
@@ -203,7 +231,7 @@ def maker_value(L, w, P):
     S = w * 1000
     step = int(P.get("requote_ms", 1000))
     for r in range(S + int(P.get("t_from", 5) * 1000), S + int(P.get("t_to", 295) * 1000), step):
-        f = L.fair(w, r, P.get("sig", 1.0), P.get("meas", 1.0))
+        f = L.fair_fast(w, r, P.get("sig", 1.0), P.get("meas", 1.0))
         if not f:
             continue
         for a, fp in ((0, f[0]), (1, 1 - f[0])):
@@ -218,15 +246,43 @@ def maker_value(L, w, P):
     return out
 
 
-STRATS = {"taker_value": taker_value, "maker_value": maker_value}
+def taker_snipe(L, w, P):
+    """After a fast fair-value jump (look_ms window), take the stale ask on the side the jump favours."""
+    out, last = [], -10 ** 12
+    S = w * 1000
+    look, jump = int(P.get("look_ms", 1000)), P.get("jump", 0.04)
+    for r in range(S + int(P.get("t_from", 5) * 1000), S + int(P.get("t_to", 299) * 1000), int(P.get("step_ms", 100))):
+        if r - last < P.get("gap_ms", 5000):
+            continue
+        f1 = L.fair_fast(w, r, P.get("sig", 1.0), P.get("meas", 1.0))
+        f0 = L.fair_fast(w, r - look, P.get("sig", 1.0), P.get("meas", 1.0))
+        if not f0 or not f1:
+            continue
+        d = f1[0] - f0[0]
+        if abs(d) < jump:
+            continue
+        a, fp = (0, f1[0]) if d > 0 else (1, 1 - f1[0])
+        bk = L.book(w, a, r)
+        if not bk or bk[3] is None or not (P.get("pmin", 0.03) <= bk[3] <= P.get("pmax", 0.97)):
+            continue
+        ask = bk[3]
+        if fp - ask - fee(ask) > P.get("edge", 0.02):
+            out.append((r, a, min(0.999, fp - fee(ask) - P.get("edge", 0.02) / 2), P.get("shares", 100), fp))
+            last = r
+            if len(out) >= P.get("max_trades", 3):
+                break
+    return out
+
+
+STRATS = {"taker_value": taker_value, "maker_value": maker_value, "taker_snipe": taker_snipe}
 
 
 def run(L, name, P, lat_ms=250):
     fills = []
-    for w in sorted(L.labels):
-        if w not in L.windows or (w, 0) not in L.tob:
+    for w in sorted(L.F):
+        if w not in L.windows or (w, 0) not in L.tob or w not in L.K:
             continue
-        K, F = L.labels[w]
+        K, F = L.K[w], L.F[w]
         up = F >= K
         if name.startswith("taker"):
             for (r, a, limit, shares, fp) in STRATS[name](L, w, P):
