@@ -6,7 +6,7 @@ Writes under data/hist/:
   twap5s/<w>.json         [[ts_ms, value], ...] official TWAP60 series at 5 s
   binance1s/<hour>.json   [[ts_ms, open, high, low, close, volume], ...]
 
-Usage: python3 -I backfill.py DAYS
+Usage: [ASSET=eth] python3 -I backfill.py DAYS   (default asset btc -> data/hist, else data/hist_<asset>)
 """
 
 import concurrent.futures as cf
@@ -19,7 +19,8 @@ import time
 import urllib.parse
 import urllib.request
 
-ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "hist")
+ASSET = os.environ.get("ASSET", "btc")
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "hist" if ASSET == "btc" else "hist_" + ASSET)
 UA = {"User-Agent": "Mozilla/5.0", "Accept-Encoding": "gzip"}
 
 
@@ -51,7 +52,7 @@ def fetch_events(starts):
     rows = []
     for i in range(0, len(starts), 40):
         chunk = starts[i:i + 40]
-        q = "&".join("slug=btc-updown-5m-%d" % s for s in chunk)
+        q = "&".join("slug=%s-updown-5m-%d" % (ASSET, s) for s in chunk)
         for e in get("https://gamma-api.polymarket.com/events?limit=50&" + q):
             m = e["markets"][0]
             meta = e.get("eventMetadata") or {}
@@ -96,7 +97,7 @@ def fetch_twap(ev):
     if os.path.exists(path):
         return ev["w"], "cached"
     w = ev["w"]
-    q = ("symbol=BTC&eventStartTime=%s&variant=fiveminute&endDate=%s&twapEnabled=true&twapLookbackSeconds=60"
+    q = ("symbol=" + ASSET.upper() + "&eventStartTime=%s&variant=fiveminute&endDate=%s&twapEnabled=true&twapLookbackSeconds=60"
          % (iso(w), iso(w + 300)))
     d = get("https://polymarket.com/api/crypto/price-history?" + q)
     with open(path, "w") as f:
@@ -111,7 +112,7 @@ def fetch_binance(hour_start):
     rows, t = [], hour_start * 1000
     end = (hour_start + 3600) * 1000
     while t < end:
-        d = get("https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1s&startTime=%d&limit=1000" % t)
+        d = get("https://data-api.binance.vision/api/v3/klines?symbol=%sUSDT&interval=1s&startTime=%d&limit=1000" % (ASSET.upper(), t))
         if not d:
             break
         for k in d:

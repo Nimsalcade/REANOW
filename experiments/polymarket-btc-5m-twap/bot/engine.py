@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-HIST = os.path.join(HERE, "data", "hist")
+HIST = os.path.join(HERE, "data", "hist" if os.environ.get("ASSET", "btc") == "btc" else "hist_" + os.environ["ASSET"])
 FEE_RATE, FEE_EXP = 0.07, 1
 PUB_DELAY = 2      # seconds before an official TWAP point is assumed visible
 FILL_WINDOW = 3    # seconds a resting taker intent may match a real print
@@ -112,6 +112,8 @@ class Data:
         # causal rolling median of the last delta_n points
         n = self.delta_n
         self.delta_pts = np.array([np.median(self.raw_delta[max(0, i - n + 1):i + 1]) for i in range(len(self.raw_delta))])
+        r = self.raw_delta[1:] - self.delta_pts[:-1]
+        self.meas = float(np.std(r)) if len(r) > 30 else 1.2   # calibrated measurement error, price units
 
     def delta_at(self, t):
         """delta usable at time t (points with ts <= t - PUB_DELAY)."""
@@ -129,8 +131,9 @@ class Data:
 
 
 # ---------------------------------------------------------------- model
-def fair(data, win, t, sig_mult=1.0, meas=1.2, fat=0.0):
-    """P(Up) at integer second t (S <= t), using info available at t."""
+def fair(data, win, t, sig_mult=1.0, meas=None, fat=0.0):
+    """P(Up) at integer second t (S <= t), using info available at t. meas defaults to calibration."""
+    meas = data.meas if meas is None else meas
     L = data.lag
     E1 = win.w + 300 - L          # last binance second inside the final average
     i = t - data.t0
@@ -192,7 +195,7 @@ def s_value(data, win, tape, P):
     """Buy the side whose fair value exceeds the market by > edge + fee, inside [t_from, t_to]."""
     out, used = [], 0
     for t in range(win.w + P.get("t_from", 0), win.w + P.get("t_to", 300), P.get("step", 1)):
-        p_up, _ = fair(data, win, t, P.get("sig", 1.0), P.get("meas", 1.2), P.get("fat", 0.0))
+        p_up, _ = fair(data, win, t, P.get("sig", 1.0), P.get("meas", None), P.get("fat", 0.0))
         for oi, fp in ((0, p_up), (1, 1 - p_up)):
             mk = tape.last_price(t, oi)
             if mk is None or not (P.get("pmin", 0.02) <= mk <= P.get("pmax", 0.98)):
@@ -264,7 +267,7 @@ def run_maker(data, P, windows=None):
         tape = Tape(win)
         pos = [0.0, 0.0]
         for t in range(win.w + P.get("t_from", 5), win.w + P.get("t_to", 290)):
-            p_up, _ = fair(data, win, t - qlat, P.get("sig", 1.0), P.get("meas", 1.2))
+            p_up, _ = fair(data, win, t - qlat, P.get("sig", 1.0), P.get("meas", None))
             quotes = []
             for oi, fp in ((0, p_up), (1, 1 - p_up)):
                 q = math.floor((fp - margin) / tick) * tick
