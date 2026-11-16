@@ -47,9 +47,10 @@ async function officialOpen(asset, start, variant, dur) {
   return getJson(`https://polymarket.com/api/crypto/crypto-price?${q}`);
 }
 
+const retryAt = new Map();   // key -> earliest next setup attempt (ms), with backoff after failures
 async function setupWindow(asset, S) {
   const key = `${asset}:${S}`;
-  if (active.has(key)) return;
+  if (active.has(key) || Date.now() < (retryAt.get(key) || 0)) return;
   const st = { asset, S, books: {}, tokens: {}, fee: { rate: 0.07, exponent: 1 }, legs: null, pairs: 0, cost: 0, fills: [], opp: null, ws: null };
   active.set(key, st);
   try {
@@ -71,8 +72,12 @@ async function setupWindow(asset, S) {
     st.legs = K15 < K5 ? { a: ['m15', 0], b: ['m5', 1] } : { a: ['m5', 0], b: ['m15', 1] };
     st.K15 = K15; st.K5 = K5; st.Ka = Math.min(K15, K5); st.Kb = Math.max(K15, K5);
     log(asset, 'window', S, `K15 ${K15.toFixed(4)} K5 ${K5.toFixed(4)} legs Up(${st.legs.a[0]}) + Down(${st.legs.b[0]})`);
+    for (const delay of [15000, 45000]) setTimeout(() => refreshStrikes(st), delay);
   } catch (e) {
-    log(asset, 'setup failed', S, e.message); active.delete(key); return;
+    const n = (st.attempt = (retryAt.get(key + ':n') || 0) + 1);
+    retryAt.set(key + ':n', n);
+    retryAt.set(key, Date.now() + Math.min(8000, 1000 * 2 ** Math.min(n, 3)) + Math.random() * 1000);   // backoff + jitter (429s)
+    log(asset, 'setup failed', S, e.message.split('?')[0]); active.delete(key); return;
   }
   for (const tk of Object.keys(st.tokens)) st.books[tk] = { bids: new Map(), asks: new Map() };
   const tokenOf = (tag, a) => Object.keys(st.tokens).find((t) => st.tokens[t][0] === tag && st.tokens[t][1] === a);
@@ -103,6 +108,24 @@ async function setupWindow(asset, S) {
     }
     check(st);
   });
+}
+
+// Official opens can be revised shortly after a window starts: re-read them and re-orient the legs.
+async function refreshStrikes(st) {
+  try {
+    const [o15, o5] = await Promise.all([officialOpen(st.asset, st.S, 'fifteen', 900), officialOpen(st.asset, st.S + 600, 'fiveminute', 300)]);
+    if (o15.openPrice == null || o5.openPrice == null) return;
+    if (o15.openPrice !== st.K15 || o5.openPrice !== st.K5) {
+      const legs = o15.openPrice < o5.openPrice ? { a: ['m15', 0], b: ['m5', 1] } : { a: ['m5', 0], b: ['m15', 1] };
+      const flipped = legs.a[0] !== st.legs.a[0];
+      log(st.asset, `strikes revised: K15 ${st.K15} -> ${o15.openPrice}, K5 ${st.K5} -> ${o5.openPrice}${flipped ? ' (legs re-oriented)' : ''}`);
+      st.K15 = o15.openPrice; st.K5 = o5.openPrice; st.Ka = Math.min(st.K15, st.K5); st.Kb = Math.max(st.K15, st.K5);
+      if (flipped) {
+        const tokenOf = (tag, a) => Object.keys(st.tokens).find((t) => st.tokens[t][0] === tag && st.tokens[t][1] === a);
+        st.legs = legs; st.legTok = { a: tokenOf(...legs.a), b: tokenOf(...legs.b) };
+      }
+    }
+  } catch (e) { /* keep current strikes */ }
 }
 
 const feeOf = (st, p) => st.fee.rate * Math.pow(p * (1 - p), st.fee.exponent);
@@ -141,7 +164,7 @@ function check(st) {
           const f = walk(st, 1 - MIN_EDGE, MAX_PAIRS - st.pairs);
           if (f.pairs > 0) {
             st.pairs += f.pairs; st.cost += f.cost;
-            const rec = { asset: st.asset, S: st.S, t: (Date.now() / 1000 - st.S).toFixed(1), pairs: +f.pairs.toFixed(2), unit: +(f.cost / f.pairs).toFixed(4) };
+            const rec = { asset: st.asset, S: st.S, t: (Date.now() / 1000 - st.S).toFixed(1), pairs: +f.pairs.toFixed(2), unit: +(f.cost / f.pairs).toFixed(4), legs: st.legs };
             st.fills.push(rec); append('fills.jsonl', rec);
             log(st.asset, `PAPER FILL ${f.pairs.toFixed(1)} pairs @ ${(f.cost / f.pairs).toFixed(4)} (window +${rec.t}s)`);
           }
@@ -162,14 +185,22 @@ async function settle(st) {
   for (let i = 0; i < 20; i++) {
     try {
       const [c15, c5] = await Promise.all([officialOpen(st.asset, st.S, 'fifteen', 900), officialOpen(st.asset, st.S + 600, 'fiveminute', 300)]);
-      if (c15.completed && c5.completed && c15.closePrice != null) {
+      if (c15.completed && c5.completed && c15.closePrice != null && c5.closePrice != null) {
         const F = c15.closePrice;
         const same = Math.abs(F - c5.closePrice) < 1e-9;
-        const payoff = (F >= st.Ka && F < st.Kb) ? 2 : 1;
-        const pnl = st.pairs * payoff - st.cost;
+        // each leg settles exactly like its own market: Up wins iff close >= open, Down wins otherwise
+        const up = { m15: c15.closePrice >= c15.openPrice, m5: c5.closePrice >= c5.openPrice };
+        let payout = 0;
+        for (const f of st.fills) {
+          const [ta, oa] = f.legs.a, [tb, ob] = f.legs.b;
+          const winA = oa === 0 ? up[ta] : !up[ta], winB = ob === 0 ? up[tb] : !up[tb];
+          payout += f.pairs * ((winA ? 1 : 0) + (winB ? 1 : 0));
+        }
+        const payoff = st.pairs ? payout / st.pairs : 0;
+        const pnl = payout - st.cost;
         totals.pairs += st.pairs; totals.cost += st.cost; totals.pnl += pnl; totals.windows.add(`${st.asset}:${st.S}`);
-        append('settled.jsonl', { asset: st.asset, S: st.S, pairs: st.pairs, cost: st.cost, F, F5: c5.closePrice, same_F: same, payoff, pnl });
-        log(st.asset, `SETTLED ${st.S}: ${st.pairs.toFixed(1)} pairs, payoff $${payoff}/pair, P&L ${pnl >= 0 ? '+' : ''}${pnl.toFixed(2)}${same ? '' : '  (WARNING: F mismatch)'}`);
+        append('settled.jsonl', { asset: st.asset, S: st.S, pairs: st.pairs, cost: st.cost, K15: c15.openPrice, K5: c5.openPrice, F, F5: c5.closePrice, same_F: same, payoff, pnl });
+        log(st.asset, `SETTLED ${st.S}: ${st.pairs.toFixed(1)} pairs, payoff $${payoff.toFixed(2)}/pair, P&L ${pnl >= 0 ? '+' : ''}${pnl.toFixed(2)}${same ? '' : '  (WARNING: F mismatch)'}`);
         writeLedger(); return;
       }
     } catch (e) { /* retry */ }
@@ -189,7 +220,7 @@ function writeLedger() {
 function tick() {
   const now = Math.floor(Date.now() / 1000);
   const S = now - (now % 900);
-  if (now >= S + 600 && now < S + 890) for (const a of ASSETS) setupWindow(a, S);   // final 5 minutes
+  if (now >= S + 600 && now < S + 890) ASSETS.forEach((a, i) => setTimeout(() => setupWindow(a, S), i * 350));   // final 5 minutes, staggered
   for (const [key, st] of active) {
     if (now >= st.S + 900 && !st.settling) { st.settling = true; settle(st).finally(() => active.delete(key)); }
   }
