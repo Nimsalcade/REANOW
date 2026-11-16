@@ -70,8 +70,12 @@ class Live:
         self.tob = defaultdict(list)    # (w, a) -> [(t, bb, bbs, ba, bas)]
         self.depth = defaultdict(list)  # (w, a) -> [(t, bids, asks)]
         self.trades = defaultdict(list) # w -> [(ts_ms, a, price, size, side)]
+        mix = {}
         for r in rows:
             k = r["k"]
+            if source == "mix" and k in ("bn", "cb"):
+                mix.setdefault(k, ([], []))
+                mix[k][0].append(r["t"]); mix[k][1].append((num(r["b"]) + num(r["a"])) / 2)
             if k == source and source in ("bn", "cb", "kr"):
                 spot_t.append(r["t"]); spot_v.append((num(r["b"]) + num(r["a"])) / 2)
             elif k == "cl" and source == "cl":
@@ -90,6 +94,14 @@ class Live:
                 self.trades[r["w"]].append((r["ts"], r["a"], r["p"], r["s"], r["sd"]))
         for v in self.trades.values():
             v.sort()
+        if source == "mix" and len(mix) == 2:
+            # merge: at every update of either feed, value = mean of latest bn and latest cb mids
+            ev = sorted([(t, 0, v) for t, v in zip(*mix["bn"])] + [(t, 1, v) for t, v in zip(*mix["cb"])])
+            last = [None, None]
+            for t, i, v in ev:
+                last[i] = v
+                if last[0] is not None and last[1] is not None:
+                    spot_t.append(t); spot_v.append((last[0] + last[1]) / 2)
         self.spot_t = np.array(spot_t, dtype=np.int64)
         self.spot_v = np.array(spot_v)
         # per-second spot (value at end of each second, by receive time)
@@ -331,16 +343,20 @@ def summarize(fills, nwin):
     if not fills:
         return {"trades": 0, "of_windows": nwin}
     pnl = np.array([f["pnl"] for f in fills]); q = np.array([f["q"] for f in fills])
-    by_w = defaultdict(float)
+    by_w, by_t = defaultdict(float), defaultdict(float)
     for f in fills:
-        by_w[f["w"]] += f["pnl"]
+        by_w[(f.get("as", "btc"), f["w"])] += f["pnl"]
+        by_t[f["w"]] += f["pnl"]
     wp = np.array(list(by_w.values()))
+    tp = np.array(list(by_t.values()))
     return {"trades": len(fills), "windows_traded": len(by_w), "of_windows": nwin,
             "win_rate": round(float(np.mean([f["won"] for f in fills])), 3),
             "avg_price": round(float(np.average([f["price"] for f in fills], weights=q)), 3),
             "shares": round(float(q.sum()), 1), "pnl_total": round(float(pnl.sum()), 2),
             "pnl_per_share": round(float(pnl.sum() / q.sum()), 4),
-            "t_stat": round(float(wp.mean() / (wp.std(ddof=1) / math.sqrt(len(wp)))), 2) if len(wp) > 2 and wp.std() > 0 else None}
+            "t_stat": round(float(wp.mean() / (wp.std(ddof=1) / math.sqrt(len(wp)))), 2) if len(wp) > 2 and wp.std() > 0 else None,
+            "time_slots": len(tp),
+            "t_time": round(float(tp.mean() / (tp.std(ddof=1) / math.sqrt(len(tp)))), 2) if len(tp) > 2 and tp.std() > 0 else None}
 
 
 def parse(args):

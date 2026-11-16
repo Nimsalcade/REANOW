@@ -87,3 +87,21 @@ variants stay in the log.
   trade-through prints, settles from the TWAP stream, and writes `data/paper/ledger.md`. Started 15:37Z.
 - Per-asset lag (Binance → Chainlink average, outcome-free calibration): 4 s for BTC/ETH/SOL/XRP/DOGE/BNB
   (errors 0.10–0.19 bp), **6 s for HYPE** (0.22 bp; its Chainlink feed evidently weights other venues).
+
+### #7 — First forward results (2 time slots × 7 assets = 14 asset-windows, 15:35–15:45Z) — too early
+| cand | real-time bot ¢/share (t) | replay forward ¢/share |
+|---|---|---|
+| F1 snipe j.04 e.02 1 s 250 ms | +11.7 (1.74) | +0.7 |
+| F2 snipe j.06 e.04 | +13.3 (1.82) | +6.9 |
+| F3 snipe j.04 e.04 2 s | +14.9 (2.19) | +3.3 |
+| F4 snipe j.04 e.02 500 ms | +13.6 (1.91) | −2.7 |
+| F5/F6 makers | ≈0 | ≈0 |
+| F7 value last 60 s | +27.6 (n=5) | +33.9 (n=6) |
+- The bot restarted at 15:38 (per-asset lag) so it missed part of slot 1; the replay covers both slots fully.
+- Per asset (replay F1): BTC −34¢, XRP −25¢, BNB −16¢; ETH +21¢, SOL +21¢, DOGE +11¢, HYPE +16¢.
+- Bug fixed: pooled summaries grouped by window start only (7 assets collapsed into 1). Now reported
+  both by asset-window (`t_stat`) and by time slot (`t_time`, conservative: crypto moves together).
+- Hypothesis for BTC losses: single-exchange (Binance-only) jumps are noise for Chainlink's
+  multi-venue aggregate; BTC makers leave those quotes up knowingly. Composite (Binance+Coinbase)
+  barely changes the 60 s-average fit (BTC 0.098 vs 0.099 bp), so this needs outcome data → registered
+  as a forward variant, not assumed.

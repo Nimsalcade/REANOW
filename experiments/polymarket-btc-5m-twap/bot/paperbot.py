@@ -178,6 +178,8 @@ class Bot:
                 if (w, 0) not in a.tob or w not in a.tw:
                     continue
                 for tag, name, P in (CFG["candidates"] if r >= self.live_from and w * 1000 >= self.live_from - 300000 else ()):
+                    if (P.get("assets") and as_ not in P["assets"]) or P.get("src", "bn") != "bn" or w < P.get("first_window", 0):
+                        continue   # composite-source candidates are scored by forward.py replay only
                     f = a.fair(w, r, P.get("sig", 1.0), P.get("meas", 1.0))
                     if f is None:
                         continue
