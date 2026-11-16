@@ -148,3 +148,35 @@ alt-only forward candidates (F10, F12, F13, scored from 15:50Z) decide it.
   jump .06 / slack .02 / 1 s / 250 ms: +12.5 ¢/share, 119 fills, t 2.76, t_time 2.61; positive on all 7 assets
   (BTC +10, ETH +19, SOL +17, XRP +6, DOGE +7, BNB +6, HYPE +32 ¢).
 - Pre-registered **F14–F17** at 16:25Z, scored from 16:30Z only; added to the real-time bot.
+
+### #11 — Final checkpoint (recording 15:17–17:59Z; stopped by the session's background time limit)
+Jump-signal information, out of sample (fill-independent; outcome − mid in the jump's direction):
+
+| jump | sample | triggers | slots | outcome − mid | t_time |
+|---|---|---|---|---|---|
+| .04 | in (< 16:30Z) | 1,307 | 15 | +6.8 pts | 2.35 |
+| .04 | forward | 685 | 5 | +2.2 pts | 2.17 |
+| .06 | in | 814 | 15 | +3.8 pts | 2.00 |
+| .06 | forward | 403 | 5 | +3.2 pts | 3.35 |
+
+The information is real out of sample but ~2–3 pts — close to taker costs (fee 1.75 ¢ + ~1 ¢ half-spread at mid).
+
+Forward P&L, replay (`forward-final.txt`; F1–F13: 196 asset-windows / 28 slots, F14–F17: 17 slots) and
+real-time bot (`ledger-final.md`, 106 settled asset-windows):
+
+| cand | fills | ¢/share | t | t_time | real-time ¢/share (t) |
+|---|---|---|---|---|---|
+| **F14 dir j.06 s.02 250 ms** | 210 | **+8.4** | **1.86** | **1.55** | +4.0 (0.82) |
+| **F16 dir j.06 500 ms** | 187 | **+7.7** | 1.78 | 1.40 | +7.3 (1.50) |
+| F17 dir j.06 s.04 2 s | 286 | +4.9 | 1.60 | 1.18 | +5.5 (1.67) |
+| F15 dir j.04 | 239 | +0.4 | 0.12 | 0.10 | +0.4 (0.08) |
+| F1–F4 model-gated snipers | 396–454 | −0.8…+2.5 | ≤0.96 | ≤0.92 | −5.4…+1.3 |
+| F9 composite source | 375 | +3.0 | 1.09 | 0.89 | n/a (replay only) |
+| F10 alts only / F11 σ×1.3 | 367 / 416 | −1.7 / −3.7 | | | −5.9 / −6.8 |
+| makers F5/F6/F13 | | −4.1 / +0.3 / −4.3 | | | +1.1 / −12.0 / −5.9 |
+| value/endgame F7/F8/F12 | | ≈0 | | | |
+
+Status: the **direction-only sniper with jump ≥ 6 pts** is the only candidate positive in both the replay
+and the real-time bot, at 250 ms and 500 ms latency. It is not yet significant (t_time 1.4–1.55 on 17 slots).
+At the observed effect size, t_time ≈ 2 needs ~28 slots (~1 more hour of recording) and ≈ 3 needs ~64 slots
+(~4 more hours). Everything else tested is ≈ 0 or negative after fees.

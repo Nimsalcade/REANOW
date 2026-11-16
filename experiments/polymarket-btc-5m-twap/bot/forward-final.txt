@@ -1,0 +1,150 @@
+forward windows: {'btc': 28, 'eth': 28, 'sol': 28, 'xrp': 28, 'doge': 28, 'bnb': 28, 'hype': 28} total 196
+F1 taker_snipe {"jump": 0.04, "edge": 0.02, "look_ms": 1000, "lat_ms": 250, "first_window": 1794843300}
+    POOLED {"trades": 451, "windows_traded": 184, "of_windows": null, "win_rate": 0.568, "avg_price": 0.564, "shares": 31843.8, "pnl_total": 785.11, "pnl_per_share": 0.0247, "t_stat": 0.96, "time_slots": 28, "t_time": 0.92}
+    btc: fills 67 ¢/share 3.24 PnL $204.5 t 0.44
+    eth: fills 71 ¢/share 9.96 PnL $626.47 t 1.84
+    sol: fills 60 ¢/share 8.13 PnL $380.45 t 1.18
+    xrp: fills 63 ¢/share -7.0 PnL $-354.27 t -1.24
+    doge: fills 62 ¢/share -3.16 PnL $-131.64 t -0.45
+    bnb: fills 66 ¢/share -3.83 PnL $-92.61 t -0.47
+    hype: fills 62 ¢/share 5.22 PnL $152.21 t 0.9
+F2 taker_snipe {"jump": 0.06, "edge": 0.04, "look_ms": 1000, "lat_ms": 250, "first_window": 1794843300}
+    POOLED {"trades": 396, "windows_traded": 163, "of_windows": null, "win_rate": 0.508, "avg_price": 0.508, "shares": 30574.3, "pnl_total": 93.41, "pnl_per_share": 0.0031, "t_stat": 0.12, "time_slots": 28, "t_time": 0.09}
+    btc: fills 61 ¢/share -2.04 PnL $-117.41 t -0.34
+    eth: fills 57 ¢/share 8.16 PnL $441.56 t 1.36
+    sol: fills 53 ¢/share -1.6 PnL $-77.27 t -0.24
+    xrp: fills 57 ¢/share -8.58 PnL $-409.14 t -1.36
+    doge: fills 53 ¢/share 4.7 PnL $190.75 t 0.74
+    bnb: fills 58 ¢/share -10.35 PnL $-216.11 t -1.69
+    hype: fills 57 ¢/share 7.67 PnL $281.03 t 1.14
+F3 taker_snipe {"jump": 0.04, "edge": 0.04, "look_ms": 2000, "lat_ms": 250, "first_window": 1794843300}
+    POOLED {"trades": 454, "windows_traded": 175, "of_windows": null, "win_rate": 0.54, "avg_price": 0.553, "shares": 33597.9, "pnl_total": -268.28, "pnl_per_share": -0.008, "t_stat": -0.32, "time_slots": 28, "t_time": -0.25}
+    btc: fills 71 ¢/share 0.45 PnL $30.23 t 0.07
+    eth: fills 71 ¢/share 8.98 PnL $598.3 t 1.73
+    sol: fills 61 ¢/share -5.56 PnL $-285.41 t -0.87
+    xrp: fills 64 ¢/share -3.34 PnL $-163.74 t -0.45
+    doge: fills 59 ¢/share -5.33 PnL $-228.96 t -0.81
+    bnb: fills 65 ¢/share -4.15 PnL $-103.08 t -0.55
+    hype: fills 63 ¢/share -3.49 PnL $-115.61 t -0.52
+F4 taker_snipe {"jump": 0.04, "edge": 0.02, "look_ms": 1000, "lat_ms": 500, "first_window": 1794843300}
+    POOLED {"trades": 404, "windows_traded": 178, "of_windows": null, "win_rate": 0.562, "avg_price": 0.563, "shares": 28476.7, "pnl_total": 183.49, "pnl_per_share": 0.0064, "t_stat": 0.23, "time_slots": 28, "t_time": 0.23}
+    btc: fills 58 ¢/share 0.11 PnL $6.43 t 0.01
+    eth: fills 67 ¢/share 5.19 PnL $300.53 t 0.85
+    sol: fills 55 ¢/share 4.79 PnL $197.32 t 0.62
+    xrp: fills 54 ¢/share -7.34 PnL $-320.64 t -1.35
+    doge: fills 54 ¢/share -1.26 PnL $-50.34 t -0.17
+    bnb: fills 61 ¢/share -2.73 PnL $-57.0 t -0.3
+    hype: fills 55 ¢/share 4.25 PnL $107.19 t 0.61
+F5 maker_value {"margin": 0.03, "requote_ms": 250, "join_only": 1, "lat_ms": 250, "first_window": 1794843300}
+    POOLED {"trades": 478, "windows_traded": 110, "of_windows": null, "win_rate": 0.49, "avg_price": 0.547, "shares": 8958.6, "pnl_total": -364.25, "pnl_per_share": -0.0407, "t_stat": -0.83, "time_slots": 27, "t_time": -0.77}
+    btc: fills 307 ¢/share 0.9 PnL $61.83 t 0.15
+    eth: fills 55 ¢/share -24.9 PnL $-247.47 t -1.96
+    sol: fills 39 ¢/share -10.75 PnL $-37.64 t -0.95
+    xrp: fills 29 ¢/share -24.38 PnL $-86.68 t -1.39
+    doge: fills 18 ¢/share -13.65 PnL $-23.8 t -0.62
+    bnb: fills 20 ¢/share -11.83 PnL $-17.59 t -0.89
+    hype: fills 10 ¢/share -18.19 PnL $-12.89 t -1.35
+F6 maker_value {"margin": 0.02, "requote_ms": 100, "join_only": 0, "lat_ms": 250, "first_window": 1794843300}
+    POOLED {"trades": 1334, "windows_traded": 145, "of_windows": null, "win_rate": 0.534, "avg_price": 0.586, "shares": 19316.9, "pnl_total": 58.5, "pnl_per_share": 0.003, "t_stat": 0.17, "time_slots": 28, "t_time": 0.14}
+    btc: fills 791 ¢/share 1.08 PnL $132.47 t 0.43
+    eth: fills 242 ¢/share 2.3 PnL $98.74 t 0.82
+    sol: fills 112 ¢/share -6.98 PnL $-74.57 t -0.78
+    xrp: fills 87 ¢/share -2.04 PnL $-18.1 t -0.3
+    doge: fills 42 ¢/share -4.72 PnL $-22.66 t -0.54
+    bnb: fills 43 ¢/share -22.5 PnL $-61.2 t -2.03
+    hype: fills 17 ¢/share 3.94 PnL $3.81 t 0.6
+F7 taker_value {"t_from": 240, "t_to": 300, "edge": 0.03, "lat_ms": 250, "pmax": 0.995, "first_window": 1794843300}
+    POOLED {"trades": 69, "windows_traded": 69, "of_windows": null, "win_rate": 0.522, "avg_price": 0.538, "shares": 3859.8, "pnl_total": 1.25, "pnl_per_share": 0.0003, "t_stat": 0.01, "time_slots": 16, "t_time": 0.0}
+    btc: fills 9 ¢/share -14.51 PnL $-119.1 t -0.95
+    eth: fills 12 ¢/share -9.48 PnL $-87.16 t -0.89
+    sol: fills 12 ¢/share 4.07 PnL $25.98 t 0.31
+    xrp: fills 7 ¢/share -5.94 PnL $-21.22 t -0.4
+    doge: fills 10 ¢/share 35.86 PnL $152.17 t 1.48
+    bnb: fills 12 ¢/share 7.64 PnL $24.64 t 1.11
+    hype: fills 7 ¢/share 6.88 PnL $25.93 t 0.52
+F8 taker_value {"t_from": 285, "t_to": 300, "edge": 0.01, "lat_ms": 250, "pmax": 0.995, "first_window": 1794843300}
+    POOLED {"trades": 19, "windows_traded": 19, "of_windows": null, "win_rate": 0.737, "avg_price": 0.681, "shares": 1029.0, "pnl_total": 5.49, "pnl_per_share": 0.0053, "t_stat": 0.05, "time_slots": 9, "t_time": 0.07}
+    btc: fills 3 ¢/share -21.52 PnL $-63.48 t -0.64
+    eth: fills 3 ¢/share 5.46 PnL $12.3 t 5.25
+    sol: fills 4 ¢/share 1.89 PnL $2.88 t 0.2
+    xrp: fills 4 ¢/share 10.79 PnL $22.02 t 0.46
+    doge: fills 1 ¢/share 59.33 PnL $5.93 t None
+    bnb: fills 3 ¢/share 17.97 PnL $24.8 t 2.25
+    hype: fills 1 ¢/share 20.8 PnL $1.04 t None
+F9 taker_snipe {"jump": 0.04, "edge": 0.04, "look_ms": 2000, "lat_ms": 250, "src": "mix", "first_window": 1794843600}
+    POOLED {"trades": 375, "windows_traded": 143, "of_windows": null, "win_rate": 0.616, "avg_price": 0.574, "shares": 30012.5, "pnl_total": 910.0, "pnl_per_share": 0.0303, "t_stat": 1.09, "time_slots": 27, "t_time": 0.89}
+    btc: fills 72 ¢/share 0.06 PnL $4.28 t 0.01
+    eth: fills 66 ¢/share 9.37 PnL $554.34 t 1.64
+    sol: fills 59 ¢/share -0.55 PnL $-27.31 t -0.07
+    xrp: fills 60 ¢/share -2.21 PnL $-101.45 t -0.36
+    doge: fills 54 ¢/share 3.22 PnL $134.49 t 0.45
+    hype: fills 64 ¢/share 9.93 PnL $345.65 t 1.44
+F10 taker_snipe {"jump": 0.04, "edge": 0.04, "look_ms": 2000, "lat_ms": 250, "assets": ["eth", "sol", "xrp", "doge", "bnb", "hype"], "first_window": 1794843600}
+    POOLED {"trades": 367, "windows_traded": 143, "of_windows": null, "win_rate": 0.526, "avg_price": 0.546, "shares": 25481.8, "pnl_total": -435.49, "pnl_per_share": -0.0171, "t_stat": -0.63, "time_slots": 27, "t_time": -0.47}
+    eth: fills 68 ¢/share 7.67 PnL $487.92 t 1.46
+    sol: fills 59 ¢/share -7.36 PnL $-363.49 t -1.16
+    xrp: fills 61 ¢/share -0.19 PnL $-8.55 t -0.03
+    doge: fills 56 ¢/share -7.63 PnL $-308.47 t -1.16
+    bnb: fills 63 ¢/share -3.22 PnL $-78.55 t -0.42
+    hype: fills 60 ¢/share -5.32 PnL $-164.34 t -0.77
+F11 taker_snipe {"jump": 0.04, "edge": 0.04, "look_ms": 2000, "lat_ms": 250, "sig": 1.3, "first_window": 1794843600}
+    POOLED {"trades": 416, "windows_traded": 165, "of_windows": null, "win_rate": 0.375, "avg_price": 0.395, "shares": 31051.5, "pnl_total": -1148.91, "pnl_per_share": -0.037, "t_stat": -1.51, "time_slots": 27, "t_time": -0.97}
+    btc: fills 64 ¢/share -4.48 PnL $-276.31 t -0.77
+    eth: fills 66 ¢/share -2.68 PnL $-157.64 t -0.54
+    sol: fills 59 ¢/share 0.44 PnL $22.76 t 0.06
+    xrp: fills 56 ¢/share -13.53 PnL $-587.25 t -2.02
+    doge: fills 55 ¢/share 3.01 PnL $118.69 t 0.44
+    bnb: fills 57 ¢/share 1.09 PnL $25.01 t 0.13
+    hype: fills 59 ¢/share -8.93 PnL $-294.18 t -1.49
+F12 taker_value {"t_from": 200, "t_to": 300, "edge": 0.05, "lat_ms": 250, "pmax": 0.995, "assets": ["eth", "sol", "xrp", "doge", "bnb", "hype"], "first_window": 1794843600}
+    POOLED {"trades": 88, "windows_traded": 88, "of_windows": null, "win_rate": 0.364, "avg_price": 0.384, "shares": 5680.9, "pnl_total": -105.76, "pnl_per_share": -0.0186, "t_stat": -0.44, "time_slots": 18, "t_time": -0.36}
+    eth: fills 15 ¢/share -3.72 PnL $-48.14 t -0.43
+    sol: fills 15 ¢/share 0.87 PnL $9.93 t 0.08
+    xrp: fills 14 ¢/share 6.08 PnL $54.06 t 0.44
+    doge: fills 13 ¢/share 6.81 PnL $51.36 t 0.76
+    bnb: fills 16 ¢/share -10.47 PnL $-67.48 t -1.02
+    hype: fills 15 ¢/share -10.97 PnL $-105.49 t -1.27
+F13 maker_value {"margin": 0.02, "requote_ms": 250, "join_only": 1, "lat_ms": 250, "assets": ["eth", "sol", "xrp", "doge", "bnb", "hype"], "first_window": 1794843600}
+    POOLED {"trades": 234, "windows_traded": 93, "of_windows": null, "win_rate": 0.517, "avg_price": 0.62, "shares": 3058.7, "pnl_total": -131.2, "pnl_per_share": -0.0429, "t_stat": -1.35, "time_slots": 27, "t_time": -1.12}
+    eth: fills 81 ¢/share -1.43 PnL $-21.2 t -0.32
+    sol: fills 41 ¢/share 1.23 PnL $4.75 t 0.17
+    xrp: fills 55 ¢/share -4.34 PnL $-28.44 t -0.58
+    doge: fills 23 ¢/share -11.83 PnL $-33.87 t -0.86
+    bnb: fills 24 ¢/share -26.85 PnL $-52.42 t -2.06
+    hype: fills 10 ¢/share -0.03 PnL $-0.02 t -0.0
+F14 taker_dir {"jump": 0.06, "slack": 0.02, "look_ms": 1000, "lat_ms": 250, "first_window": 1794846600}
+    POOLED {"trades": 210, "windows_traded": 105, "of_windows": null, "win_rate": 0.581, "avg_price": 0.502, "shares": 11104.3, "pnl_total": 928.76, "pnl_per_share": 0.0836, "t_stat": 1.86, "time_slots": 17, "t_time": 1.55}
+    btc: fills 33 ¢/share 9.18 PnL $272.45 t 1.14
+    eth: fills 36 ¢/share 7.54 PnL $201.5 t 0.68
+    sol: fills 30 ¢/share 11.01 PnL $230.46 t 0.93
+    xrp: fills 31 ¢/share 12.45 PnL $191.87 t 0.95
+    doge: fills 26 ¢/share 12.31 PnL $97.5 t 1.26
+    bnb: fills 27 ¢/share 2.46 PnL $11.54 t 0.28
+    hype: fills 27 ¢/share -13.46 PnL $-76.56 t -1.34
+F15 taker_dir {"jump": 0.04, "slack": 0.02, "look_ms": 1000, "lat_ms": 250, "first_window": 1794846600}
+    POOLED {"trades": 239, "windows_traded": 109, "of_windows": null, "win_rate": 0.561, "avg_price": 0.549, "shares": 12912.6, "pnl_total": 54.67, "pnl_per_share": 0.0042, "t_stat": 0.12, "time_slots": 17, "t_time": 0.1}
+    btc: fills 41 ¢/share 12.16 PnL $429.57 t 2.02
+    eth: fills 39 ¢/share 0.15 PnL $4.31 t 0.02
+    sol: fills 38 ¢/share -10.31 PnL $-280.85 t -0.99
+    xrp: fills 37 ¢/share -7.59 PnL $-154.09 t -0.92
+    doge: fills 23 ¢/share 11.2 PnL $77.41 t 1.44
+    bnb: fills 32 ¢/share 7.14 PnL $36.81 t 1.01
+    hype: fills 29 ¢/share -12.75 PnL $-58.49 t -1.07
+F16 taker_dir {"jump": 0.06, "slack": 0.02, "look_ms": 1000, "lat_ms": 500, "first_window": 1794846600}
+    POOLED {"trades": 187, "windows_traded": 98, "of_windows": null, "win_rate": 0.583, "avg_price": 0.513, "shares": 10072.8, "pnl_total": 779.76, "pnl_per_share": 0.0774, "t_stat": 1.78, "time_slots": 17, "t_time": 1.4}
+    btc: fills 27 ¢/share 9.11 PnL $230.91 t 1.07
+    eth: fills 34 ¢/share 2.31 PnL $59.66 t 0.25
+    sol: fills 29 ¢/share 11.9 PnL $231.48 t 0.97
+    xrp: fills 29 ¢/share 11.15 PnL $154.32 t 0.96
+    doge: fills 24 ¢/share 12.94 PnL $98.69 t 1.36
+    bnb: fills 21 ¢/share 8.56 PnL $37.32 t 0.53
+    hype: fills 23 ¢/share -7.52 PnL $-32.62 t -0.77
+F17 taker_dir {"jump": 0.06, "slack": 0.04, "look_ms": 2000, "lat_ms": 250, "first_window": 1794846600}
+    POOLED {"trades": 286, "windows_traded": 116, "of_windows": null, "win_rate": 0.591, "avg_price": 0.544, "shares": 20000.9, "pnl_total": 972.75, "pnl_per_share": 0.0486, "t_stat": 1.6, "time_slots": 17, "t_time": 1.18}
+    btc: fills 44 ¢/share 9.97 PnL $419.22 t 1.25
+    eth: fills 45 ¢/share -5.26 PnL $-220.11 t -0.86
+    sol: fills 38 ¢/share 13.46 PnL $444.72 t 1.64
+    xrp: fills 45 ¢/share 4.24 PnL $145.78 t 0.53
+    doge: fills 36 ¢/share 5.62 PnL $126.26 t 0.87
+    bnb: fills 37 ¢/share 16.16 PnL $159.04 t 1.78
+    hype: fills 41 ¢/share -6.24 PnL $-102.16 t -0.89
