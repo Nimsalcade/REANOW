@@ -1,0 +1,9 @@
+{
+  "name": "pm-btc5m-paper-bot",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "https-proxy-agent": "7.0.6",
+    "ws": "8.18.3"
+  }
+}
