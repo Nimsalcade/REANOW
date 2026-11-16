@@ -193,3 +193,21 @@ At the observed effect size, t_time ≈ 2 needs ~28 slots (~1 more hour of recor
 - Reading: the neighbourhood is positive almost everywhere but bumpy, so F14 sits near a noisy peak;
   a fair estimate of the true edge is the neighbourhood's typical +5–7 ¢/share, not +9.5 ¢.
 - Pre-registered F18 (cap 2) and F19 (F14 without HYPE/BNB), scored from 18:30Z.
+
+### #13 — 19:00Z check-in: the direction sniper regressed to zero; why, and what scalping does
+- Forward (266 asset-windows; F14–F17 27 slots incl. the 17:59–18:22Z gap, F18–F19 6 slots):
+  F14 **+0.8 ¢/share** (355 fills, t 0.23, t_time 0.17) — down from +8.4 ¢ at 17 slots; F16 −0.2 ¢;
+  F17 +0.3 ¢; F18 +2.0 ¢ (n 67); F19 −5.2 ¢ (n 77). Real-time bot since 18:24Z: F14 −7.4 ¢, F16 −5.4 ¢,
+  F17 −6.4 ¢, F18 −0.1 ¢. F1–F4 snipers −1.5…+0.9 ¢. Early forward strength was regression-to-mean luck.
+- The jump **information** itself is stable: jump ≥ .06, outcome − mid = +3.8 pts (15:17–16:30),
+  +7.2 (16:30–18:00, t_time 5.9), +4.4 (18:22–19:00, t_time 2.0); jump ≥ .04 pooled over everything:
+  +5.7 pts (4,092 triggers, se 0.7).
+- Winner's curse in our fills (all data, 250 ms): filled triggers outcome − mid +4.9 pts with ask − mid
+  +0.7 at fill; unfilled +6.5 pts but the ask had moved +5.1. Net at the real ask after fee ≈ +2.6 ¢ (all data);
+  +0.6 ¢ at 500 ms.
+- Jump scalping (`scalp.py`): taker exit after 3/5 s −2.1/−1.5 ¢ (t −7.5/−4.3: round-trip costs exceed the
+  drift); after 20/40 s +0.9/+1.8 ¢; maker exits −1.7…−4.6 ¢. Hold-to-resolution from 16:30Z: −0.04 ¢
+  (355 entries).
+- **Reading:** forward information at jumps (~3 pts) ≈ taker costs (fee 0.07·p(1−p) ≈ 1.75 ¢ at mid plus
+  ~0.7–1 ¢ half-spread). At ~250 ms latency the edge is about the size of the costs; the in-sample
+  +8–12 ¢ results were selection.
