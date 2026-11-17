@@ -270,3 +270,16 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
 - **Informed maker** (`informed_maker.py`, queue fill model, ~5 h live books): post a bid on the favoured side
   after a jump instead of taking. −5.0…+3.2 ¢/share, t ≤ 0.5, sign flips between early and late data; fills
   arrive when sellers disagree (win 0.49–0.58 at price 0.47–0.53). No edge.
+
+### #18 — Ladder paper run, first 3¼ h cross-checked from public data (2026-11-17 00:47Z)
+- The ladder bot runs on the user's Mac since 2026-11-16 21:32Z (fixed code: revised-strike refresh, per-leg
+  official settlement, staggered setup, ws 8.23.0). Its first window's K15/K5 matched the cloud copy exactly
+  for all 7 assets. This session cannot read the Mac's `ladder-data`, so the same period was re-measured from
+  public data (`ladder/ladder_check.py`, Gamma official strikes/finals + data-api tapes).
+- 21:30–00:45Z, 84 asset-windows: F identical in the 15 m and final 5 m market **84/84**; middle band 26.2 %.
+- Riskless pair (cost incl. fees ≤ $1.00) in **5 windows** (BTC 22:30, ETH 21:45 and 23:00, SOL 23:00, XRP 00:00):
+  +4.15 ¢/pair mean, min +0.25 ¢; at the bot's ≤ $0.995: 4 windows, +5.13 ¢/pair; ≤ $0.98: 2 windows, +8.70 ¢.
+  Total time below $1: **14 s**; trade size at the trigger instant: median 8–9 shares (max 21).
+- Reading: the structure is exact and every trigger wins, but at the sizes seen on the tape the run is worth
+  roughly $0.5–1 per hour. Book depth at those instants (the bot's `opportunities.jsonl` `max_pairs`) decides
+  whether it scales; pending the Mac files.
