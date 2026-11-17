@@ -85,3 +85,37 @@ ETH 5 m in Feb −$0.51/market (48 % win). Trading stops ~2026-02-20.
   from tapes or 1 s books cannot grant queue priority, so they systematically under-fill the benign flow and
   over-weight adverse sweeps. Validating it needs an L2 queue-position model on recorded books (next
   step) or real orders.
+
+## How each session is built (`legs.py`, 340 sampled sessions, every fill from data-api `/v2/activity`)
+
+Stratified sample: 15 sessions per month × coin × market length (BTC/ETH; 15 m, 1 h, 5 m), Oct 2025 – Feb 2026.
+
+| | 5 m (Feb 2026) | 15 m | 1 h |
+|---|---|---|---|
+| First fill after the open (median; p10–p90) | +14 s (12–29) | +21 s (16–38) | +25 s (17–79) |
+| Fills before the open | 0 % | 0 % | 0 % |
+| First side Up | 53 % | 57 % | 51 % |
+| First-leg price median (p10–p90) | 0.50 (0.36–0.58) | 0.49 (0.39–0.56) | 0.49 (0.43–0.54) |
+| First fill size / leg-1 shares before the other leg starts | 8.4 / 10 | 10 / 40 | 10 / 40 |
+| Other leg's first fill after the first fill | 3 s | 8 s | 10 s |
+| First fill of each leg combined: median, share under $1 | 0.990, 53 % | 0.980, 65 % | 0.990, 52 % |
+| Fills / side switches / shares per session (median) | 64 / 23 / 447 | 275 / 58 / 2,423 | 511 / 126 / 4,801 |
+| Last fill before the close (median) | 81 s | 103 s | 324 s |
+| Fills where price + other side's average < $1 | 55 % | 57 % | 54 % |
+| Final pair cost / balance / max imbalance in session | 0.9864 / 0.961 / 9 % | 0.9805 / 0.985 / 5 % | 0.9889 / 0.991 / 3 % |
+| Sells | 0 | 0 | 0 |
+
+- 15 m running pair cost: 0.976 after 10 % of his fills (below $1 in 77 % of sessions), 0.982 at 50 %, 0.9805 at the
+  end (88 %). Session P&L is the same whether the first pair cost < $1 (median $18.70) or ≥ $1 ($18.61).
+- 69 % of fills share a second with the previous fill: takers sweep several stacked 10–12-share bids at once.
+  12.8 % of 15 m fills are below 0.20 and 9.6 % above 0.80 — he keeps quoting as the market turns one-sided.
+- When imbalanced by ≥ 30 shares the next fill is on the light side 58 % of the time, at the same price as that
+  side's previous fill (no price lean visible).
+- 15 m edge by month: pair cost 0.957 → 0.975 → 0.980 → 0.985 → 0.992 (Oct → Feb) while shares per session
+  grew 691 → 5,188.
+- Reading: a continuous two-sided maker from ~20 s after the open to 1½–5 min before the close, small clips at
+  the touch, inventory kept within a few percent; profit is the ~1–2 ¢ spread captured per pair on average, not
+  cheap entries. His exact settings on today's 5 m books (`../bot/pairmaker.py`, queue model, start +14 s, stop
+  81 s before close, 10-share clips, no pair cap): pair cost **1.02–1.03**, −$4.1…−$5.4 per window (t ≈ −10);
+  with a pair cap ≤ $1.00/0.98: −$1.3…−$1.9 per window (locked pairs +, leftovers −). Today's 15 m books were not
+  recorded, so the 15 m version is untested.

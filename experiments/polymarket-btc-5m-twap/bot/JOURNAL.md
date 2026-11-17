@@ -352,3 +352,11 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
   about 2½ days on 7 assets.
 - Reading: deeper discounts complete proportionally less often, as in a fair game; no threshold pair
   beats it after fees on this data.
+
+### #24 — gabagool's session anatomy and a clone with his settings (`../gabagool/legs.py`)
+- 340 sampled sessions, every fill: first fill +14/+21/+25 s after the open (5 m/15 m/1 h), never before it, at
+  0.49–0.50 on a random side (Up 51–57 %), 10-share clips; the other leg follows 3–10 s later; first pair
+  ≥ $1 in 35–48 % of sessions with no effect on P&L; running pair cost ≈ 0.98 from the first 10 % of fills;
+  stops 81/103/324 s before the close; imbalance ≤ 3–9 %; no sells. Details: `../gabagool/README.md`.
+- Clone on today's 5 m books (pairmaker, queue model, his timing and clip): pair cost 1.02–1.03, −$4.1…−$5.4/window
+  without a cap, −$1.3…−$1.9 with one. His fills were 1.5–2 ¢ under $1 per pair; ours are 2–3 ¢ over.
