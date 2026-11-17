@@ -375,3 +375,19 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
   with 100–1,300 shares/day trading through those prices and 24 h moves of 0.03–0.11. The two largest
   ($107–187/day) are Iran-ceasefire markets past their deadline, awaiting resolution — the risk there is the
   resolution jump. Untested: fills, news jumps and how competition changes during the day; needs a multi-day paper run.
+
+### #26 — Live pre-open run, 15 m clone, and the reward farmers who are profitable now
+- **Pre-open live run** (10:49–12:49Z, 161 asset-sessions, 72 configs): hold-to-end 0/36 configs positive
+  (100-share configs ≈ −$15/session, t −6 to −7, leftover won 13–15 %); cancel at +30 s 5/36 positive, best t +0.62.
+  Confirms #21.
+- **15 m clone** (`clone.py 15m`, 27–28 sessions 12:00–13:00Z, gabagool's 15 m timing): 10/12 variants positive, best
+  join + pair ≤ $1.00 + imbalance 120: +$186 (+$6.90/session, t 0.57) — but slot 12:30 made +$287 while 12:00/12:15/12:45
+  lost $1/$29/$71; without the best 3 sessions −$60; median session +$0.64. One favourable quarter-hour, not an edge.
+- **Reward farmers** (`../structural/lp_wallets.py`): of the 80 wallets present in the most rewarded markets, 72 received
+  liquidity-reward payouts, $4.87 M in total. Largest: ArmageddonRewardsBil… $1.20 M (since 2025-01), Haradwaith $0.89 M,
+  lissartter $0.46 M, Istaroth $0.36 M, hfv $0.35 M. Pure quoters (near-zero open value) earning most now:
+  Istaroth $6,813/day (Oct $144 K, Nov 1–17 $95 K), hfv $6,100/day (Oct $240 K), WarriorH $1,947/day (Oct $68 K);
+  their closed-position P&L on the up to 20,000 positions fetched is +$1.38 M / +$1.17 M / +$2.37 M.
+  Profile: 150–250 slow markets at once (weather, central banks, elections, tweet counts, AI rankings, box office),
+  median fill 20–31 shares, buys and sells, merges constantly. Next: decode their quoting rules and paper-run a
+  multi-market reward quoter.
