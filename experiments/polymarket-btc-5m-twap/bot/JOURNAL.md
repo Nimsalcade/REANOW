@@ -295,3 +295,24 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
 - **Verdict:** the ladder is exact (F identical 84/84) and riskless when it fills, but capacity is 5–30 pairs per
   episode, a few episodes per 3 hours, ~1–2 ¢ per pair at realistic latency: ≈ $0.2/hour. Not worth running for
   money; recommended to stop.
+
+### #20 — Taker-rebate volume farming: rejected by arithmetic (2026-11-17)
+- Weighted volume, from Polymarket's worked example: a $50 crypto trade at 50 ¢ earns 50 × 0.5 × 2.3 = $57.50 wV,
+  at 5 ¢ 50 × 0.95 × 2.3 = $109.25. So wV = notional × (1 − p) × weight = shares × p(1 − p) × weight, while the
+  taker fee is shares × rate × p(1 − p): **fee / wV = rate / weight at every price**.
+- Live fee schedules (`rebates.py`, 13,242 markets in the top-500 events): crypto 0.07; economics, culture,
+  weather, general 0.05; politics, finance, tech, mentions 0.04; sports v2 0.03 (sports v3 0.05); geopolitics and
+  part of world fee-free (no wV). The category weights 2.3 / 1.7 / 1.3 / 1.0 are these rates ÷ 0.03, so
+  **wV ≈ taker fees ÷ 3 %** (2.94–3.08 %). The tiers are fee tiers: Bronze ≈ $61 of fees in 30 days, Obsidian ≈ $304 K.
+- Best case (target-tier rebate on every fee, no spread, every bonus): refunds are 19–61 % of the fees paid, net
+  −$49 (Bronze) … −$117,864 (Obsidian); with a hedged Up+Down pair at 50 ¢ and a 1-tick spread (+0.87 % of wV)
+  −$66 … −$204,820. Constant-volume path to Obsidian: month-1 average rebate 37.2 %, net −$243,777; each later month
+  −$239,130. Break-even would need a wV multiplier of ≈ 7× (8× in month 1), capped at the $34,310 of one-time bonuses.
+- For our strategies the program is a fee discount, not a source of profit: the ladder's ~48 pairs per 3½ h, extrapolated, stays
+  at Bronze (3 % of fees). Obsidian halves the crypto fee (1.75 → 0.875 ¢/share at 50 ¢) but requires ~17 M shares
+  a month at 50 ¢.
+- Where participation itself pays: liquidity-reward pools, $43.8 K/day over 1,143 markets (tech $13.1 K,
+  politics $7.5 K, fee-free $7.3 K, culture $5.9 K; largest $500–1,000/day on long-dated Fed, NVIDIA-CEO and
+  election markets; max spread 2.5–6.5 ¢, min size 50–200). Live crypto Up/Down markets: 0/8 with a pool.
+  Plus maker rebates (20 % of crypto taker fees, 25 % elsewhere) on filled volume — gabagool's $50.5 K.
+  Next candidate: a paper quoting bot for reward pools in slow markets.
