@@ -1,0 +1,11 @@
+{
+  "name": "ladder-paper-bot",
+  "private": true,
+  "description": "Strike-ladder paper bot for Polymarket crypto Up/Down markets (no orders are sent)",
+  "dependencies": {
+    "ws": "8.23.0"
+  },
+  "optionalDependencies": {
+    "https-proxy-agent": "7.0.6"
+  }
+}

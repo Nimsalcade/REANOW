@@ -1,0 +1,256 @@
+{
+ "frozen_at": "2026-11-16T15:35:00Z",
+ "first_window": 1794843300,
+ "note": "Pre-registered before any forward window resolved; chosen by mechanism, not by in-sample rank.",
+ "candidates": [
+  [
+   "F1",
+   "taker_snipe",
+   {
+    "jump": 0.04,
+    "edge": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 250,
+    "first_window": 1794843300
+   }
+  ],
+  [
+   "F2",
+   "taker_snipe",
+   {
+    "jump": 0.06,
+    "edge": 0.04,
+    "look_ms": 1000,
+    "lat_ms": 250,
+    "first_window": 1794843300
+   }
+  ],
+  [
+   "F3",
+   "taker_snipe",
+   {
+    "jump": 0.04,
+    "edge": 0.04,
+    "look_ms": 2000,
+    "lat_ms": 250,
+    "first_window": 1794843300
+   }
+  ],
+  [
+   "F4",
+   "taker_snipe",
+   {
+    "jump": 0.04,
+    "edge": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 500,
+    "first_window": 1794843300
+   }
+  ],
+  [
+   "F5",
+   "maker_value",
+   {
+    "margin": 0.03,
+    "requote_ms": 250,
+    "join_only": 1,
+    "lat_ms": 250,
+    "first_window": 1794843300
+   }
+  ],
+  [
+   "F6",
+   "maker_value",
+   {
+    "margin": 0.02,
+    "requote_ms": 100,
+    "join_only": 0,
+    "lat_ms": 250,
+    "first_window": 1794843300
+   }
+  ],
+  [
+   "F7",
+   "taker_value",
+   {
+    "t_from": 240,
+    "t_to": 300,
+    "edge": 0.03,
+    "lat_ms": 250,
+    "pmax": 0.995,
+    "first_window": 1794843300
+   }
+  ],
+  [
+   "F8",
+   "taker_value",
+   {
+    "t_from": 285,
+    "t_to": 300,
+    "edge": 0.01,
+    "lat_ms": 250,
+    "pmax": 0.995,
+    "first_window": 1794843300
+   }
+  ],
+  [
+   "F9",
+   "taker_snipe",
+   {
+    "jump": 0.04,
+    "edge": 0.04,
+    "look_ms": 2000,
+    "lat_ms": 250,
+    "src": "mix",
+    "first_window": 1794843600
+   }
+  ],
+  [
+   "F10",
+   "taker_snipe",
+   {
+    "jump": 0.04,
+    "edge": 0.04,
+    "look_ms": 2000,
+    "lat_ms": 250,
+    "assets": [
+     "eth",
+     "sol",
+     "xrp",
+     "doge",
+     "bnb",
+     "hype"
+    ],
+    "first_window": 1794843600
+   }
+  ],
+  [
+   "F11",
+   "taker_snipe",
+   {
+    "jump": 0.04,
+    "edge": 0.04,
+    "look_ms": 2000,
+    "lat_ms": 250,
+    "sig": 1.3,
+    "first_window": 1794843600
+   }
+  ],
+  [
+   "F12",
+   "taker_value",
+   {
+    "t_from": 200,
+    "t_to": 300,
+    "edge": 0.05,
+    "lat_ms": 250,
+    "pmax": 0.995,
+    "assets": [
+     "eth",
+     "sol",
+     "xrp",
+     "doge",
+     "bnb",
+     "hype"
+    ],
+    "first_window": 1794843600
+   }
+  ],
+  [
+   "F13",
+   "maker_value",
+   {
+    "margin": 0.02,
+    "requote_ms": 250,
+    "join_only": 1,
+    "lat_ms": 250,
+    "assets": [
+     "eth",
+     "sol",
+     "xrp",
+     "doge",
+     "bnb",
+     "hype"
+    ],
+    "first_window": 1794843600
+   }
+  ],
+  [
+   "F14",
+   "taker_dir",
+   {
+    "jump": 0.06,
+    "slack": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 250,
+    "first_window": 1794846600
+   }
+  ],
+  [
+   "F15",
+   "taker_dir",
+   {
+    "jump": 0.04,
+    "slack": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 250,
+    "first_window": 1794846600
+   }
+  ],
+  [
+   "F16",
+   "taker_dir",
+   {
+    "jump": 0.06,
+    "slack": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 500,
+    "first_window": 1794846600
+   }
+  ],
+  [
+   "F17",
+   "taker_dir",
+   {
+    "jump": 0.06,
+    "slack": 0.04,
+    "look_ms": 2000,
+    "lat_ms": 250,
+    "first_window": 1794846600
+   }
+  ],
+  [
+   "F18",
+   "taker_dir",
+   {
+    "jump": 0.06,
+    "slack": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 250,
+    "max_trades": 2,
+    "first_window": 1794853800
+   }
+  ],
+  [
+   "F19",
+   "taker_dir",
+   {
+    "jump": 0.06,
+    "slack": 0.02,
+    "look_ms": 1000,
+    "lat_ms": 250,
+    "assets": [
+     "btc",
+     "eth",
+     "sol",
+     "xrp",
+     "doge"
+    ],
+    "first_window": 1794853800
+   }
+  ]
+ ],
+ "note2": "F9-F13 frozen 2026-11-16T15:47Z after the first 2 forward slots; scored from window 1794843600 (15:50Z).",
+ "note3": "F14-F17 (direction-only sniper) frozen 2026-11-16T16:25Z after an in-sample sweep (93% of 96 configs positive); scored from window 1794846600 (16:30Z).",
+ "note4": "F18-F19 frozen 2026-11-16T18:26Z from a feature/neighbourhood study over 15:17-17:59Z; scored from window 1794853800 (18:30Z)."
+}
