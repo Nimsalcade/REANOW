@@ -417,3 +417,14 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
   +3.2 c/share, t 2.77, 8/9 days positive. Once the low is clearly behind (now ≥ low + 2 °C) it is priced: +0.7 c.
 - Capacity is the limit: ~46 K taker shares in the window over 14 days market-wide; first live asks had 5 shares.
 - `weather_low_paper.py` paper-trades the rule live (first entries 2026-11-17 14:31Z: Los Angeles and Seattle 5 @ 0.68).
+
+### #29 — Patterns in BTC 5 m / 15 m results and hourly betting progressions (`patterns.py`)
+- 60 days of official results (Gamma outcomePrices), 2026-09-18 … 11-17: 17,256 5 m and 5,752 15 m windows. Break-even
+  win rate at the measured opening ask (median 0.51, recorded books) plus fee: 52.75 %.
+- Up 49.6 % / 49.0 %; same as previous 49.9 % / 48.7 %; against 2 in a row 50.7 % / 52.5 %; against 5 in a row 52.9 % /
+  49.4 %. Round of the hour, hour of day and weekday: chi-square at chance level. Split-half: "Thursday Down"
+  48.5 → 54.4 % (5 m) and 50.5 → 61.2 % (15 m), i.e. recent Thursdays only; "03:00 UTC Down" 54.7 / 54.4 % (5 m) and
+  53.3 / 59.2 % (15 m) — consistent but the most extreme of 24 hours, ~1.8 pts over break-even; unproven.
+- Progressions per clock hour (24 variants: always Up / repeat last / opposite; double or recover-losses+$1; 4 or 6
+  rounds): hours won 93–99 %, total −$40 … −$559 over 1,439 h (best +$5); losing hours cost $15–84. No pattern beats
+  break-even, so no progression can.
