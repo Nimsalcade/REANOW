@@ -428,3 +428,9 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
 - Progressions per clock hour (24 variants: always Up / repeat last / opposite; double or recover-losses+$1; 4 or 6
   rounds): hours won 93–99 %, total −$40 … −$559 over 1,439 h (best +$5); losing hours cost $15–84. No pattern beats
   break-even, so no progression can.
+
+### #30 — Hourly Up/Down vs the noon ladder, live (2026-11-17 16:00–17:00Z, `../structural/noon_ladder.py`)
+- 127 runs, one about every 30 s, while the 11 AM ET hourly markets traded (opens: BTC $64,115.08, ETH $1,785.44,
+  SOL $72.47, XRP $0.96). Hourly-link pairs (type C): **none** under $1 after fees in any run.
+- 12 sub-$1 sightings, all ladder (A) or ladder-vs-bucket (B): cheapest $0.9974 (SOL >85 / >90 and >100, 3–5 shares),
+  BTC >66,000 vs 9 buckets $0.9998 at size 0, XRP $0.9992 × 15.8 shares; at most $0.01 locked per run. Closed.
