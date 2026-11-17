@@ -360,3 +360,18 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
   stops 81/103/324 s before the close; imbalance ≤ 3–9 %; no sells. Details: `../gabagool/README.md`.
 - Clone on today's 5 m books (pairmaker, queue model, his timing and clip): pair cost 1.02–1.03, −$4.1…−$5.4/window
   without a cap, −$1.3…−$1.9 with one. His fills were 1.5–2 ¢ under $1 per pair; ours are 2–3 ¢ over.
+
+### #25 — New gaps outside crypto Up/Down (`../structural/`)
+- **Guaranteed baskets** (`scan.py`, all 2,100 active events, CLOB re-check with fees): all-No baskets on
+  mutually exclusive outcomes (sum of Yes bids > $1) and out-of-order nested deadlines / price ladders
+  (Yes on the market that must be at least as likely, below the bid of the one it implies). Confirmed now:
+  12 pairs, **$1.64 locked in total** (largest $0.41); 0 of 4 baskets survived the re-check. Policed by bots.
+  (A first pass flagged hundreds; they were parse errors: Dec 31 deadlines resolve after midnight UTC, mixed ↑/↓
+  ladders, "$2T", "how low" ladders.)
+- **Liquidity-reward pools** (`rewards.py`, 2,572 rewarded markets, $45.9 K/day): estimated share for 1,000 shares
+  per side one tick inside the touch, with competition = the larger side's qualifying book score (an upper
+  bound on others' score, so the share is a lower bound for that snapshot). Best estimates $25–80/day per $1k
+  (e.g. Democratic-trifecta 60 % $79, Musk 1000+ tweets $55, Kimberly Powell resignation $39, Lindsay Clancy $25),
+  with 100–1,300 shares/day trading through those prices and 24 h moves of 0.03–0.11. The two largest
+  ($107–187/day) are Iran-ceasefire markets past their deadline, awaiting resolution — the risk there is the
+  resolution jump. Untested: fills, news jumps and how competition changes during the day; needs a multi-day paper run.
