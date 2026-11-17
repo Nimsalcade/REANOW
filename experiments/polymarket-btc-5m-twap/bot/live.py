@@ -27,9 +27,15 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 LIVE = os.path.join(HERE, "data", "live")
 
 
-def load_rows():
+DURS = {"5m": 300, "15m": 900}
+
+
+def load_rows(dur="5m"):
+    """Recorded rows for one market length: data/live (5m, plus backfilled 5m labels) or data/live15m."""
     rows = []
-    for f in sorted(glob.glob(os.path.join(LIVE, "*.jsonl*"))) + glob.glob(os.path.join(LIVE, "..", "labels", "*.jsonl")):
+    live = LIVE if dur == "5m" else LIVE + dur
+    extra = glob.glob(os.path.join(LIVE, "..", "labels", "*.jsonl")) if dur == "5m" else []
+    for f in sorted(glob.glob(os.path.join(live, "*.jsonl*"))) + extra:
         op = gzip.open if f.endswith(".gz") else open
         with op(f, "rt") as fh:
             for line in fh:
@@ -60,7 +66,8 @@ def num(v):
 
 
 class Live:
-    def __init__(self, lag=None, delta_n=12, sigma_halflife=600, source="bn", asset="btc", rows=None):
+    def __init__(self, lag=None, delta_n=12, sigma_halflife=600, source="bn", asset="btc", rows=None, dur=300):
+        self.dur = dur
         lag = LAGS.get(asset, 4) if lag is None else lag
         self.lag, self.source, self.asset = lag, source, asset
         rows = [r for r in (rows if rows is not None else load_rows()) if r.get("as", "btc") == asset]
@@ -132,7 +139,7 @@ class Live:
         # K and F straight from the TWAP stream (exactly the official open/close); labels cross-check.
         tw_at = {T: v for _, T, v in self.twap}
         self.K = {w: tw_at[w] for w in self.windows if w in tw_at}
-        self.F = {w: tw_at[w + 300] for w in self.windows if w + 300 in tw_at}
+        self.F = {w: tw_at[w + dur] for w in self.windows if w + dur in tw_at}
         for w, (o, c) in self.labels.items():
             self.K.setdefault(w, o); self.F.setdefault(w, c)
         res = np.array(raw[1:]) - np.array(self.d_val[:-1]) if len(raw) > 30 else np.array([0.0])

@@ -33,7 +33,7 @@ def floor_tick(p):
 
 
 def run_window(L, w, P):
-    S, E = w * 1000, (w + 300) * 1000
+    S, E = w * 1000, (w + L.dur) * 1000
     tr = L.trades.get(w, [])
     tts = [x[0] for x in tr]
     q, c = [0.0, 0.0], [0.0, 0.0]

@@ -21,7 +21,11 @@ const KRAKEN = { 'BTC/USD': 'btc', 'ETH/USD': 'eth', 'SOL/USD': 'sol', 'XRP/USD'
 
 const PROXY = process.env.HTTPS_PROXY || process.env.https_proxy;
 const agent = PROXY ? new HttpsProxyAgent(PROXY) : undefined;
-const OUT = path.join(__dirname, 'data', 'live');
+// --dur 15m records the 15-minute markets instead (output data/live15m/); the default is 5m.
+const DUR_TAG = (() => { const i = process.argv.indexOf('--dur'); return i > 0 ? process.argv[i + 1] : '5m'; })();
+const DUR = { '5m': 300, '15m': 900 }[DUR_TAG];
+if (!DUR) throw new Error(`unsupported --dur ${DUR_TAG}`);
+const OUT = path.join(__dirname, 'data', DUR_TAG === '5m' ? 'live' : `live${DUR_TAG}`);
 fs.mkdirSync(OUT, { recursive: true });
 
 let sinkHour = null;
@@ -167,7 +171,7 @@ async function openWindow(start) {
   const w = { start, tokens: new Map(), books: new Map(), lastTob: new Map(), conn: null };
   windows.set(start, w);
   try {
-    const q = ASSETS.map((as) => `slug=${as}-updown-5m-${start}`).join('&');
+    const q = ASSETS.map((as) => `slug=${as}-updown-${DUR_TAG}-${start}`).join('&');
     const evs = await getJson(`https://gamma-api.polymarket.com/events?limit=50&${q}`);
     for (const ev of evs) {
       const as = ev.slug.split('-')[0];
@@ -234,11 +238,11 @@ setInterval(() => {
 
 // ---------- Official labels ----------
 const labelled = new Set();
-const VARIANT = 'fiveminute';
+const VARIANT = { '5m': 'fiveminute', '15m': 'fifteen' }[DUR_TAG];
 async function fetchLabel(as, start) {
   const key = `${as}:${start}`;
   const iso = (s) => new Date(s * 1000).toISOString().replace('.000', '');
-  const q = `symbol=${as.toUpperCase()}&eventStartTime=${iso(start)}&variant=${VARIANT}&endDate=${iso(start + 300)}&twapEnabled=true&twapLookbackSeconds=60`;
+  const q = `symbol=${as.toUpperCase()}&eventStartTime=${iso(start)}&variant=${VARIANT}&endDate=${iso(start + DUR)}&twapEnabled=true&twapLookbackSeconds=60`;
   try {
     const r = await getJson(`https://polymarket.com/api/crypto/crypto-price?${q}`);
     if (r.completed && r.closePrice != null) {
@@ -250,14 +254,14 @@ async function fetchLabel(as, start) {
 
 function tick() {
   const now = Math.floor(Date.now() / 1000);
-  const cur = now - (now % 300);
-  for (const s of [cur, cur + 300]) openWindow(s);
+  const cur = now - (now % DUR);
+  for (const s of [cur, cur + DUR]) openWindow(s);
   for (const [s, w] of windows) {
-    if (now > s + 300 + 45) { if (w.conn) w.conn.close(); windows.delete(s); log('closed window', s); }
+    if (now > s + DUR + 45) { if (w.conn) w.conn.close(); windows.delete(s); log('closed window', s); }
   }
-  for (const s of [cur - 300, cur - 600]) for (const as of ASSETS) if (!labelled.has(`${as}:${s}`)) fetchLabel(as, s);
+  for (const s of [cur - DUR, cur - 2 * DUR]) for (const as of ASSETS) if (!labelled.has(`${as}:${s}`)) fetchLabel(as, s);
 }
 tick();
 setInterval(tick, 10000);
 process.on('SIGTERM', () => { if (sink) sink.end(); process.exit(0); });
-log('recorder v2 started', ASSETS.join(','));
+log('recorder v2 started', DUR_TAG, ASSETS.join(','));
