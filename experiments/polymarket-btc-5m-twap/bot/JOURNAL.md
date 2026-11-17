@@ -316,3 +316,27 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
   election markets; max spread 2.5–6.5 ¢, min size 50–200). Live crypto Up/Down markets: 0/8 with a pool.
   Plus maker rebates (20 % of crypto taker fees, 25 % elsewhere) on filled volume — gabagool's $50.5 K.
   Next candidate: a paper quoting bot for reward pools in slow markets.
+
+### #21 — Pre-open pair resting (user idea): rest both legs of the next window before it opens (`preopen.py`)
+- Replay on the recorded live books (the recorder holds each next window's book for its last 5 minutes
+  before the open), queue model of #16. Your rule — bids 0.49 × 10 on Up and Down posted 60 s before the
+  open, held: 290 asset-windows, both legs filled 54 %, only one leg 43 % and that leg won **2 %**;
+  P&L −$599 (−$2.07/window): locked pairs +$28, leftovers −$627. At the front of the queue (as if posted
+  hours earlier): −$553. All 108 variants (lead 240/60/10 s, px 0.49/0.48/0.45, 10/100 shares, hold or cancel
+  at +30 s, taker completion) lose except a few 10 s-lead cells at t < 1. BTC is closest (both legs 83–89 %):
+  −$0.38/window, +$0.05 at the queue front.
+- Mechanism: a static bid fills when the price moves against it; the next window is already being
+  priced before its open (60 s TWAP start: BTC at 0.63 ten seconds before the 10:50Z open). Break-even
+  would need ~24 balanced windows per one-sided window; observed ≈ 1.
+- Live paper run (`preopen_paper.cjs`, 72 configs, all 7 assets) started 2026-11-17 10:49Z.
+
+### #22 — Buy both legs on dips (user idea): first side at ≤ X, second when the pair locks a margin (`dips.py`)
+- Up and Down share one price (Down ask = 1 − Up bid), so pair cost = $1 − (rise of leg 1's price between
+  the two buys): a buy-the-dip / sell-the-bounce trade. Under a fair game the bounce to H happens with
+  probability mid/H and the expected value is 0 before fees.
+- Hindsight (339 asset-windows): after the first dip to X the other side later got cheap enough for a pair
+  under $1 in 61–79 % of windows (X 0.10–0.45), under $0.90 in 32–68 %; when it never did, leg 1 won 0–1.4 %.
+- Strategy grid, 84 configs (X 0.45…0.15, margin 0…0.10, leg 2 taker / resting bid): **all negative**.
+  Observed completion is below the fair-game rate (e.g. X 0.35, margin 0.10: 62 % vs 66 %; margin 0: 77 %
+  vs 86 %) — dips tend to continue. X 0.35 / margin 0.10: completed +$1.20, not completed −$2.65 (leg 1
+  won 0 %), −$0.26/window. Best: X 0.25 / margin 0.10, −$0.12/window (t −0.64).
