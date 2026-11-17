@@ -340,3 +340,15 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
   Observed completion is below the fair-game rate (e.g. X 0.35, margin 0.10: 62 % vs 66 %; margin 0: 77 %
   vs 86 %) — dips tend to continue. X 0.35 / margin 0.10: completed +$1.20, not completed −$2.65 (leg 1
   won 0 %), −$0.26/window. Best: X 0.25 / margin 0.10, −$0.12/window (t −0.64).
+
+### #23 — Dip thresholds searched, chosen on one half, scored on the other (`dips_search.py`)
+- 1,620 combinations: first leg ≤ 0.05…0.45, bought by +30…+240 s; second leg the first time the pair
+  costs ≤ $1.00…$0.70 incl. fees; give up after 30/60/120 s (sell leg 1 at the bid) or hold. 367 sessions,
+  halves split by time (171 / 196).
+- Best chosen on half 1: +5.95 c/session per share → **−3.75 c** on half 2. Best chosen on half 2: +1.95 c →
+  **−1.33 c** on half 1. Overall 12 of 1,620 positive, none with t > 2. Positive in both halves: 3
+  combinations (first leg ≤ 0.15–0.20 by +180 s, pair ≤ 0.70–0.80, hold), +0.3…+1.5 c/session,
+  t ≤ 0.38. Resolving an effect of about 1 c at a per-session SD of about 35 c would take ~5,000 sessions,
+  about 2½ days on 7 assets.
+- Reading: deeper discounts complete proportionally less often, as in a fair game; no threshold pair
+  beats it after fees on this data.
