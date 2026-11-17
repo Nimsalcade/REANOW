@@ -283,3 +283,15 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
 - Reading: the structure is exact and every trigger wins, but at the sizes seen on the tape the run is worth
   roughly $0.5–1 per hour. Book depth at those instants (the bot's `opportunities.jsonl` `max_pairs`) decides
   whether it scales; pending the Mac files.
+
+### #19 — Ladder verdict from the Mac bot's live books (13 windows, 21:22Z–00:49Z)
+- Bot results: 5 sub-$1 episodes (DOGE 21:30 1 ms / 5 pairs; SOL 21:45 3 ms / 7.5; SOL 23:00 280 ms / 30 and
+  507 ms / 18; XRP 00:00 368 ms / 9.8), best costs 0.951–0.991. Paper fills: 47.8 pairs in 2 windows (SOL 23:00,
+  XRP 00:00) at $0.985–0.987 per pair (150 ms latency) → **P&L +$0.67, +1.41 ¢/pair**; same_F true in both.
+- Tape vs book: the tape-only "opportunities" (BTC 22:30, ETH 21:45, ETH 23:00) combine prints from different
+  instants of fast moves — e.g. BTC 22:30 +63 s: leg A printed 0.63…0.76 within one second including a
+  1,171-share sweep — so they were never simultaneously available. data-api's 1 s resolution cannot separate
+  them; the live book is the ground truth. The ms-long DOGE/SOL 21:xx episodes are book-update transients.
+- **Verdict:** the ladder is exact (F identical 84/84) and riskless when it fills, but capacity is 5–30 pairs per
+  episode, a few episodes per 3 hours, ~1–2 ¢ per pair at realistic latency: ≈ $0.2/hour. Not worth running for
+  money; recommended to stop.
