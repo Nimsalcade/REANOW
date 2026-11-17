@@ -402,3 +402,18 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
 | Slow-updating weather crowd | favourite under-priced late in the day? | favourite priced 55.9/66.6/86.3 % won 60.9/68.5/89.1 % (10/13/15 h), within 1–2 se and below costs |
 | Forecast-anchored Munich | 10 °C observed at 14:20 local vs 13 °C favourite | wind shift and gusts in the TAF; the market prices a forecast warm-up, not stale data |
 - Pattern: every gap provable from public prices and public data is already harvested; markets are calibrated.
+
+### #28 — The dawn-low edge in weather markets (first edge found by rule homework) (`../structural/`)
+- `metar_snipe.py` replays each settled US event's routine METARs with the settlement rules: the replay equals the
+  official winner in **289/292** events. Selling into buckets a published report had already killed captured only
+  $195 in 14 days (11 US cities); the fastest such sale came 4 s after publication — METAR sniping is taken.
+- `weather_trades.py` scores every taker buy (46 stations, 5 days, replay = official in 380/380) against what
+  the published reports showed at that moment: win rate ≈ price in almost every cell, except buying the bucket that
+  holds the observed **low** with ≥ 10 h of the local day left.
+- 14 days, all cities, complete METAR history (`metar_history`, 6-day windows under the API's 400-row cap; the capped
+  first pass kept only 405/542 events and inflated the result): replay = official **541/542**. Buying the low's bucket
+  at **04:00–08:00 local**: 378 city-days, +5.4 c/share after fees (+$2,489), per city-day +4.3 c (t 3.35), 11/14 days
+  positive. 00–04: +3.6 c (t 1.98); 08–12: −0.5 c; 12–14: +1.2 c. Days not used to find it (Nov 3–11, 00–14 local):
+  +3.2 c/share, t 2.77, 8/9 days positive. Once the low is clearly behind (now ≥ low + 2 °C) it is priced: +0.7 c.
+- Capacity is the limit: ~46 K taker shares in the window over 14 days market-wide; first live asks had 5 shares.
+- `weather_low_paper.py` paper-trades the rule live (first entries 2026-11-17 14:31Z: Los Angeles and Seattle 5 @ 0.68).

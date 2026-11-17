@@ -1,2 +1,4 @@
 scan-latest.json
 lp-wallets.json
+weather-paper/
+*.log
