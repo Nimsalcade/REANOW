@@ -391,3 +391,14 @@ stable; taker execution at ~250 ms with fee 0.07·p(1−p) does not harvest it. 
   Profile: 150–250 slow markets at once (weather, central banks, elections, tweet counts, AI rankings, box office),
   median fill 20–31 shares, buys and sells, merges constantly. Next: decode their quoting rules and paper-run a
   multi-market reward quoter.
+
+### #27 — Six new edges built from the rules, each tested on live data (2026-11-17)
+| idea (`../structural/`) | mechanism | result |
+|---|---|---|
+| Holding-reward carry | hold Yes + No (= $1, no price risk) in markets paying 4 %/yr on position value; buy as a maker | 511 eligible markets, mostly 2028 elections, already thick with resting size; netting of hedged pairs unpublished; 4 %/yr at best |
+| Noon cross-product ladder (`noon_ladder.py`) | "above X", "price on" buckets and the 11 AM ET hourly Up/Down all settle on the Binance close at 12:00 ET | 290 guaranteed pairs (BTC/ETH/SOL/XRP, today and tomorrow): cheapest $1.0003; hourly link only checkable 16:00–17:00Z |
+| Decided weather buckets (`weather.py`) | buckets beaten by an observed METAR are dead; sell their bids | 1 left, $0.21 (a first pass flagged 65: a "64-65°F" parse bug and a METAR row cap on multi-station queries) |
+| Weather rule bias (`weather_bias.py`) | settlement uses hourly routine reports only, below the continuous high that forecasts predict | 330 settled US events: winning bucket − market-expected high = +0.12 °F (se 0.08) at 10:00, +0.01 at 13:00, −0.03 at 15:00 — no bias |
+| Slow-updating weather crowd | favourite under-priced late in the day? | favourite priced 55.9/66.6/86.3 % won 60.9/68.5/89.1 % (10/13/15 h), within 1–2 se and below costs |
+| Forecast-anchored Munich | 10 °C observed at 14:20 local vs 13 °C favourite | wind shift and gusts in the TAF; the market prices a forecast warm-up, not stale data |
+- Pattern: every gap provable from public prices and public data is already harvested; markets are calibrated.
